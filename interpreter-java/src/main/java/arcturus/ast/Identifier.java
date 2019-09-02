@@ -12,9 +12,17 @@ public class Identifier implements Expression {
         this.token = token;
     }
 
+    public Token getToken() {
+        return token;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
     @Override
     public String tokenLiteral() {
-        return null;
+        return token.getLiteral();
     }
 
     @Override

@@ -1,11 +1,10 @@
 package arcturus.lexer;
 
 import org.junit.Test;
+import org.junit.Assert;
 
 import arcturus.token.Token;
 import arcturus.token.Token.Type;
-
-import org.junit.Assert;
 
 public class LexerTest {
     @Test

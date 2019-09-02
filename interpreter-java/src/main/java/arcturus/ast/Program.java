@@ -14,6 +14,14 @@ public class Program implements Node {
         statements = new ArrayList<>();
     }
 
+    public List<Statement> getStatements() {
+        return statements;
+    }
+
+    public boolean addStatement(Statement s) {
+        return statements.add(s);
+    }
+
     @Override
     public String tokenLiteral() {
         if (statements.size() > 0) {

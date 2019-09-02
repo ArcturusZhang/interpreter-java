@@ -10,15 +10,39 @@ public class LetStatement implements Statement {
     private Identifier name;
     private Expression expression;
 
+    public LetStatement(Token token) {
+        this.token = token;
+    }
+
     public LetStatement(Token token, Identifier name, Expression expression) {
         this.token = token;
         this.name = name;
         this.expression = expression;
     }
 
+    public Token getToken() {
+        return token;
+    }
+
+    public Identifier getName() {
+        return name;
+    }
+
+    public void setName(Identifier name) {
+        this.name = name;
+    }
+
+    public void setExpression(Expression expression) {
+        this.expression = expression;
+    }
+
+    public Expression getExpression() {
+        return expression;
+    }
+
     @Override
     public String tokenLiteral() {
-        return null;
+        return token.getLiteral();
     }
 
     @Override
