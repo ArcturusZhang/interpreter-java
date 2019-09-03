@@ -157,9 +157,9 @@ public class Parser {
     private ReturnStatement parseReturnStatement() {
         var returnStatement = new ReturnStatement(currentToken);
         nextToken(); // skip the return keyword
-        // todo -- expression
-        while (!currentTokenIs(Type.SEMICOLON)) {
-            nextToken();
+        returnStatement.setReturnValue(parseExpression(Precedence.LOWEST));
+        if (!expectPeek(Type.SEMICOLON)) {
+            return null;
         }
         return returnStatement;
     }
