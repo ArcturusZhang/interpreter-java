@@ -5,7 +5,7 @@ import java.io.PrintStream;
 import java.util.Scanner;
 
 import arcturus.lexer.Lexer;
-import arcturus.token.Token.Type;
+import arcturus.parser.Parser;
 
 public class Repl {
     private static final String PROMPT = ">> ";
@@ -16,9 +16,10 @@ public class Repl {
             out.print(PROMPT);
             var line = scanner.nextLine();
             if (line == null) break;
-            var lexer = new Lexer(line);
-            for (var token = lexer.nextToken(); token.getType() != Type.EOF; token = lexer.nextToken()) {
-                out.println(token);
+            var parser = new Parser(new Lexer(line));
+            var program = parser.parse();
+            for (var stmt : program.getStatements()) {
+                System.out.println(stmt);
             }
         }
         scanner.close();

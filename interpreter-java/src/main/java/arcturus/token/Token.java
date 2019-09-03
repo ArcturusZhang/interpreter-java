@@ -52,6 +52,7 @@ public class Token {
         keywords.put("false", Type.FALSE);
         keywords.put("if", Type.IF);
         keywords.put("else", Type.ELSE);
+        keywords.put("for", Type.FOR);
         keywords.put("return", Type.RETURN);
     }
 
@@ -95,6 +96,7 @@ public class Token {
         FALSE,
         IF,
         ELSE,
+        FOR,
         RETURN,
     }
 }
