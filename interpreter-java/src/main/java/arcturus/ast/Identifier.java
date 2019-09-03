@@ -8,8 +8,9 @@ public class Identifier implements Expression {
     private Token token;
     private String value;
 
-    public Identifier(Token token) {
+    public Identifier(Token token, String value) {
         this.token = token;
+        this.value = value;
     }
 
     public Token getToken() {

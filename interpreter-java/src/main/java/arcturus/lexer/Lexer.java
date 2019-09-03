@@ -45,7 +45,7 @@ public class Lexer {
 
     private char peekChar() {
         if (this.readPosition >= input.length()) {
-            return (char)0;
+            return (char) 0;
         }
         return input.charAt(this.readPosition);
     }
@@ -124,14 +124,14 @@ public class Lexer {
     }
 
     private void skipWhitespaces() {
-        while (isWhitespace(this.ch)) {
+        while (this.ch != (char) 0 && isWhitespace(this.ch)) {
             readChar();
         }
     }
 
     private String readUntilWhitespace() {
         var start = this.position;
-        while (!isWhitespace(this.ch)) {
+        while (this.ch != (char) 0 && !isWhitespace(this.ch)) {
             readChar();
         }
         return input.substring(start, this.position);
@@ -154,7 +154,7 @@ public class Lexer {
     }
 
     private static boolean isEmpty(char ch) {
-        return ch == (char)0;
+        return ch == (char) 0;
     }
 
     private static boolean isOperator(char ch) {
@@ -178,7 +178,7 @@ public class Lexer {
     }
 
     private static boolean isBracket(char ch) {
-        return ch =='[' || ch == ']';
+        return ch == '[' || ch == ']';
     }
 
     private static boolean isBrace(char ch) {
@@ -186,11 +186,13 @@ public class Lexer {
     }
 
     private static boolean isDelimiterOfNumber(char ch) {
-        return isEmpty(ch) || isWhitespace(ch) || isOperator(ch) || isComparison(ch) || isCompound(ch) || isDelimiter(ch);
+        return isEmpty(ch) || isWhitespace(ch) || isOperator(ch) || isComparison(ch) || isCompound(ch)
+                || isDelimiter(ch);
     }
 
     private Token readEqual() {
-        if (this.ch != '=') throw new LexerException("This should not happen");
+        if (this.ch != '=')
+            throw new LexerException("This should not happen");
         if (peekChar() == '=') {
             readChar();
             return new Token(Type.EQ, "==");
@@ -199,7 +201,8 @@ public class Lexer {
     }
 
     private Token readLessThan() {
-        if (this.ch != '<') throw new LexerException("This should not happen");
+        if (this.ch != '<')
+            throw new LexerException("This should not happen");
         if (peekChar() == '=') {
             readChar();
             return new Token(Type.LE, "<=");
@@ -208,7 +211,8 @@ public class Lexer {
     }
 
     private Token readGreaterThan() {
-        if (this.ch != '>') throw new LexerException("This should not happen");
+        if (this.ch != '>')
+            throw new LexerException("This should not happen");
         if (peekChar() == '=') {
             readChar();
             return new Token(Type.GE, ">=");
@@ -217,7 +221,8 @@ public class Lexer {
     }
 
     private Token readBang() {
-        if (this.ch != '!') throw new LexerException("This should not happen");
+        if (this.ch != '!')
+            throw new LexerException("This should not happen");
         if (peekChar() == '=') {
             readChar();
             return new Token(Type.NE, "!=");
@@ -227,7 +232,7 @@ public class Lexer {
 
     private String readIdentifier() {
         var start = this.position;
-        while (isIdentifierPart(this.ch)) {
+        while (this.ch != (char) 0 && isIdentifierPart(this.ch)) {
             readChar();
         }
         return input.substring(start, this.position);
@@ -253,7 +258,8 @@ public class Lexer {
     }
 
     private Token readFloat() {
-        if (this.ch != '.') throw new LexerException("This should not happen");
+        if (this.ch != '.')
+            throw new LexerException("This should not happen");
         readChar();
         var fraction = readNumber();
         if (fraction.length() == 0) {

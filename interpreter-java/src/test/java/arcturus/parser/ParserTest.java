@@ -4,43 +4,49 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import arcturus.ast.LetStatement;
-import arcturus.ast.interfaces.Statement;
+import arcturus.ast.Program;
+import arcturus.ast.ReturnStatement;
 import arcturus.lexer.Lexer;
 
 public class ParserTest {
     @Test
     public void testLetStatement() {
-        // var items = new Item[]{
-        // new Item("let x = 5;", "x", 5),
-        // new Item("let z = 1.3;", "z", 1.3),
-        // new Item("let foobar = yl;", "foobar", "yl"),
-        // };
-        // for (var item : items) {
-        // var parser = new Parser(new Lexer(item.input));
-        // var program = parser.parse();
-        // if (program == null) {
-
-        // }
-        // }
         var item = new Item("let x = 5;", "x", 5);
         letStatementTestCore(item);
     }
 
     private void letStatementTestCore(Item item) {
-        var parser = new Parser(new Lexer(item.input));
-        var program = parser.parse();
-        Assert.assertNotNull("Program should not be null", program);
+        var program = parseProgram(item.input);
         Assert.assertEquals(1, program.getStatements().size());
         var statement = program.getStatements().get(0);
-        assertLetStatement(item, statement);
-    }
-
-    private void assertLetStatement(Item item, Statement statement) {
         Assert.assertEquals("let", statement.tokenLiteral());
         Assert.assertEquals(LetStatement.class, statement.getClass());
         var let = (LetStatement) statement;
         Assert.assertEquals(item.expectedIdentifier, let.getName().tokenLiteral());
-        Assert.assertEquals(item.expectedValue, let.getName().getValue());
+    }
+
+    @Test
+    public void testReturnStatement() {
+        var item = new Item("return y;", "return", "y");
+        returnStatementTestCore(item);
+    }
+
+    private void returnStatementTestCore(Item item) {
+        var program = parseProgram(item.input);
+        Assert.assertEquals(1, program.getStatements().size());
+        var statement = program.getStatements().get(0);
+        Assert.assertEquals(item.expectedIdentifier, statement.tokenLiteral());
+        Assert.assertEquals(ReturnStatement.class, statement.getClass());
+        var returnStatement = (ReturnStatement) statement;
+        Assert.assertEquals(returnStatement.getReturnValue().tokenLiteral(), item.expectedValue);
+    }
+
+    private Program parseProgram(String input) {
+        var parser = new Parser(new Lexer(input));
+        var program = parser.parse();
+        Assert.assertNotNull("Program should not be null", program);
+        Assert.assertTrue("There should not be any error", parser.getErrors().isEmpty());
+        return program;
     }
 
     static class Item {

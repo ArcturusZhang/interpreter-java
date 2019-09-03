@@ -1,11 +1,13 @@
 package arcturus;
 
+import arcturus.repl.Repl;
+
 /**
  * Hello world!
  *
  */
 public class App {
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        Repl.Start(System.in, System.out);
     }
 }
