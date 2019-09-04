@@ -7,8 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import arcturus.ast.BlockStatement;
 import arcturus.ast.BooleanLiteral;
 import arcturus.ast.DecimalLiteral;
+import arcturus.ast.FunctionLiteral;
 import arcturus.ast.Identifier;
 import arcturus.ast.InfixExpression;
 import arcturus.ast.IntegerLiteral;
@@ -48,10 +50,10 @@ public class Parser {
         registerPrefix(this::parseBooleanLiteral, Type.TRUE, Type.FALSE);
         registerPrefix(this::parsePrefixExpression, Type.BANG, Type.MINUS);
         registerPrefix(this::parseGroupedExpression, Type.LPAREN);
-        registerPrefix(this::parseIfExpression, Type.IF);
-        registerPrefix(this::parseForExpression, Type.FOR);
+        // registerPrefix(this::parseIfExpression, Type.IF);
+        // registerPrefix(this::parseForExpression, Type.FOR);
         registerPrefix(this::parseFunctionLiteral, Type.FUNCTION);
-        // registerPrefix(this::parseStringLiteral, Type.STRING);
+        registerPrefix(this::parseStringLiteral, Type.STRING);
         registerPrefix(this::parseArrayLiteral, Type.LBRACKET);
         infixParseMap = new HashMap<>();
         registerInfix(this::parseInfixExpression, Type.PLUS, Type.MINUS, Type.ASTERISK, Type.SLASH, 
@@ -237,15 +239,66 @@ public class Parser {
         return expression;
     }
 
-    private Expression parseIfExpression() {
-        return null;
-    }
+    // private Expression parseIfExpression() {
+    //     return null;
+    // }
 
-    private Expression parseForExpression() {
-        return null;
-    }
+    // private Expression parseForExpression() {
+    //     return null;
+    // }
 
     private Expression parseFunctionLiteral() {
+        var funcLiteral = new FunctionLiteral(currentToken);
+        if (!expectPeek(Type.LPAREN)) {
+            return null;
+        }
+        funcLiteral.setParameters(parseFunctionParameters());
+        if (!expectPeek(Type.LBRACE)) {
+            return null;
+        }
+        funcLiteral.setBody(parseBlockStatement());
+        return funcLiteral;
+    }
+
+    private List<Identifier> parseFunctionParameters() {
+        List<Identifier> identifiers = new ArrayList<>();
+        if (peekTokenIs(Type.RPAREN)) { // no parameters
+            nextToken();
+            return identifiers;
+        }
+        nextToken();
+        if (!currentTokenIs(Type.IDENTIFIER)) {
+            raiseTokenError(Type.IDENTIFIER, currentToken);
+            return null;
+        }
+        identifiers.add(new Identifier(currentToken, currentToken.getLiteral()));
+        while (peekTokenIs(Type.COMMA)) {
+            nextToken(); // current token is comma
+            nextToken(); // skip comma
+            if (!currentTokenIs(Type.IDENTIFIER)) {
+                raiseTokenError(Type.IDENTIFIER, currentToken);
+                return null;
+            }
+            identifiers.add(new Identifier(currentToken, currentToken.getLiteral()));
+        }
+        if (!expectPeek(Type.RPAREN)) return null;
+        return identifiers;
+    }
+
+    private BlockStatement parseBlockStatement() {
+        var block = new BlockStatement(currentToken);
+        nextToken(); // skip {
+        while (!currentTokenIs(Type.RBRACE)) {
+            var statement = parseStatement();
+            if (statement != null) {
+                block.addStatement(statement);
+            }
+            nextToken();
+        }
+        return block;
+    }
+
+    private Expression parseStringLiteral() {
         return null;
     }
 

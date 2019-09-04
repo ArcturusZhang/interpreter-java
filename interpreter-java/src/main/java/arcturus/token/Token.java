@@ -69,34 +69,37 @@ public class Token {
         IDENTIFIER,
         INT,
         DECIMAL,
-        ASSIGN,
-        PLUS,
-        MINUS,
-        ASTERISK,
-        SLASH,
-        BANG,
-        SEMICOLON,
-        COMMA,
-        DOT,
-        LT,
-        GT,
-        EQ,
-        NE,
-        LE,
-        GE,
-        LPAREN,
-        RPAREN,
-        LBRACE,
-        RBRACE,
-        LBRACKET,
-        RBRACKET,
-        FUNCTION,
-        LET,
-        TRUE,
-        FALSE,
-        IF,
-        ELSE,
-        FOR,
-        RETURN,
+        STRING, 
+        ASSIGN, // =
+        PLUS,   // +
+        MINUS,  // -
+        ASTERISK,   // *
+        SLASH,  // \
+        BANG,   // !
+        SEMICOLON,  // ;
+        COMMA,  // ,
+        DOT,    // .
+        LT,     // <
+        GT,     // >
+        EQ,     // ==
+        NE,     // !=
+        LE,     // <=
+        GE,     // >=
+        LPAREN, // (
+        RPAREN, // )
+        LBRACE, // {
+        RBRACE, // }
+        LBRACKET,   // [
+        RBRACKET,   // ]
+        QUOTE,  // "
+        SINGLEQUOTE,    // '
+        FUNCTION,   // func
+        LET,    // let
+        TRUE,   // true
+        FALSE,  // false
+        IF,     // if
+        ELSE,   // else
+        FOR,    // for
+        RETURN, // return
     }
 }

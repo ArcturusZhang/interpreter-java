@@ -38,8 +38,10 @@ public class Lexer {
         }
         this.position = this.readPosition;
         this.readPosition++;
+        this.col++;
         if (this.ch == '\n') {
             this.line++;
+            this.col = 0;
         }
     }
 
@@ -102,11 +104,17 @@ public class Lexer {
         case ',':
             token = new Token(Type.COMMA, this.ch);
             break;
+        case '.':
+            return readFloat();
+        case '"':
+            token = new Token(Type.QUOTE, this.ch);
+            break;
+        case '\'':
+            token = new Token(Type.SINGLEQUOTE, this.ch);
+            break;
         case (char) 0:
             token = new Token(Type.EOF, "");
             break;
-        case '.':
-            return readFloat();
         default:
             if (isIdentifierStart(this.ch)) {
                 var literal = readIdentifier();
