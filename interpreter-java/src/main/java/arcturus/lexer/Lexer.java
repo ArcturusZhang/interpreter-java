@@ -107,7 +107,7 @@ public class Lexer {
         case '.':
             return readFloat();
         case '"':
-            token = new Token(Type.QUOTE, this.ch);
+            token = new Token(Type.STRING, readString());
             break;
         case '\'':
             token = new Token(Type.SINGLEQUOTE, this.ch);
@@ -286,6 +286,15 @@ public class Lexer {
         var start = this.position;
         while (isDigit(this.ch)) {
             readChar();
+        }
+        return input.substring(start, this.position);
+    }
+
+    private String readString() {
+        var start = this.position + 1;
+        while (true) {
+            readChar(); // skip first "
+            if (this.ch == '"') break;
         }
         return input.substring(start, this.position);
     }

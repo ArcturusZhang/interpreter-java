@@ -9,6 +9,7 @@ import java.util.Map;
 
 import arcturus.ast.BlockStatement;
 import arcturus.ast.BooleanLiteral;
+import arcturus.ast.CallExpression;
 import arcturus.ast.DecimalLiteral;
 import arcturus.ast.FunctionLiteral;
 import arcturus.ast.Identifier;
@@ -18,6 +19,7 @@ import arcturus.ast.LetStatement;
 import arcturus.ast.PrefixExpression;
 import arcturus.ast.Program;
 import arcturus.ast.ReturnStatement;
+import arcturus.ast.StringLiteral;
 import arcturus.ast.interfaces.Expression;
 import arcturus.ast.interfaces.Statement;
 import arcturus.lexer.Lexer;
@@ -58,7 +60,7 @@ public class Parser {
         infixParseMap = new HashMap<>();
         registerInfix(this::parseInfixExpression, Type.PLUS, Type.MINUS, Type.ASTERISK, Type.SLASH, 
         Type.EQ, Type.NE, Type.LT, Type.GT, Type.LE, Type.GE);
-        // registerInfix(this::parseCallExpression, Type.LPAREN);
+        registerInfix(this::parseCallExpression, Type.LPAREN);
         // registerInfix(this::parseIndexExpression, Type.LBRACKET);
     }
 
@@ -299,10 +301,32 @@ public class Parser {
     }
 
     private Expression parseStringLiteral() {
-        return null;
+        return new StringLiteral(currentToken, currentToken.getLiteral());
     }
 
     private Expression parseArrayLiteral() {
+        // todo
         return null;
+    }
+
+    private Expression parseCallExpression(Expression function) {
+        return new CallExpression(currentToken, function, parseExpressionList(Type.RPAREN));
+    }
+
+    private List<Expression> parseExpressionList(Type end) {
+        var results = new ArrayList<Expression>();
+        if (peekTokenIs(end)) {
+            nextToken();
+            return results;
+        }
+        nextToken(); // skip start token
+        results.add(parseExpression(Precedence.LOWEST));
+        while (peekTokenIs(Type.COMMA)) {
+            nextToken();
+            nextToken();
+            results.add(parseExpression(Precedence.LOWEST));
+        }
+        if (!expectPeek(end)) return null;
+        return results;
     }
 }
