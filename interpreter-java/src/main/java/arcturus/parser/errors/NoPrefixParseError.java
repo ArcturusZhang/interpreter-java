@@ -1,5 +1,6 @@
 package arcturus.parser.errors;
 
+import arcturus.token.Token;
 import arcturus.token.Token.Type;
 
 public class NoPrefixParseError implements ParseError {
@@ -8,11 +9,11 @@ public class NoPrefixParseError implements ParseError {
     private int line;
     private int col;
     private String message;
-    public NoPrefixParseError(Type type, int line, int col) {
+    public NoPrefixParseError(Type type, Token token, int line, int col) {
         this.type = type;
         this.line = line;
         this.col = col;
-        this.message = String.format(ERROR_FORMAT, type, line, col);
+        this.message = String.format(ERROR_FORMAT, type, token, line, col);
     }
 
     @Override

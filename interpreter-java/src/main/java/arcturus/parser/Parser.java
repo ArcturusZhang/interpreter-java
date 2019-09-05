@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import arcturus.ast.AssignStatement;
 import arcturus.ast.BlockStatement;
 import arcturus.ast.BooleanLiteral;
 import arcturus.ast.CallExpression;
@@ -84,8 +85,8 @@ public class Parser {
         errors.add(new TokenError(expected, got, lexer.getLine(), lexer.getCol()));
     }
 
-    public void raiseNoPrefixParseError(Type type) {
-        errors.add(new NoPrefixParseError(type, lexer.getLine(), lexer.getCol()));
+    public void raiseNoPrefixParseError(Type type, Token got) {
+        errors.add(new NoPrefixParseError(type, got, lexer.getLine(), lexer.getCol()));
     }
 
     public void nextToken() {
@@ -135,6 +136,8 @@ public class Parser {
             return parseLetStatement();
         case RETURN:
             return parseReturnStatement();
+        case IDENTIFIER:
+            return parseAssignStatement();
         default:
             // todo
             return null;
@@ -171,7 +174,7 @@ public class Parser {
     private Expression parseExpression(Precedence precedence) {
         var prefix = prefixParseMap.get(currentToken.getType());
         if (prefix == null) {
-            raiseNoPrefixParseError(currentToken.getType());
+            raiseNoPrefixParseError(currentToken.getType(), currentToken);
             return null;
         }
         var leftExp = prefix.parse();
@@ -328,5 +331,14 @@ public class Parser {
         }
         if (!expectPeek(end)) return null;
         return results;
+    }
+
+    private AssignStatement parseAssignStatement() {
+        var identifierToken = currentToken;
+        if (!expectPeek(Type.ASSIGN)) return null; // todo -- array element assignment
+        nextToken(); // skip =
+        var assign = new AssignStatement(identifierToken, new Identifier(identifierToken, identifierToken.getLiteral()));
+        assign.setValue(parseExpression(Precedence.LOWEST));
+        return assign;
     }
 }
