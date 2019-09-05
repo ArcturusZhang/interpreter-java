@@ -65,4 +65,11 @@ public class InfixExpression implements Expression {
 
     }
 
+    @Override
+    public String toString() {
+        return String.format(PATTERN, left, operator, right);
+    }
+
+    private static final String PATTERN = "( %s %s %s )";
+
 }

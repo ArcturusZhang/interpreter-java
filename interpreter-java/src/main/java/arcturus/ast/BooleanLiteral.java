@@ -34,4 +34,9 @@ public class BooleanLiteral implements Expression {
 
     }
 
+    @Override
+    public String toString() {
+        return String.valueOf(value);
+    }
+
 }

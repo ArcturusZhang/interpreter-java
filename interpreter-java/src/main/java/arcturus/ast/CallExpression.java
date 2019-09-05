@@ -2,6 +2,7 @@ package arcturus.ast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import arcturus.ast.interfaces.Expression;
 import arcturus.token.Token;
@@ -10,6 +11,7 @@ public class CallExpression implements Expression {
     private Token token;
     private Expression function;
     private List<Expression> arguments;
+
     public CallExpression(Token token, Expression function, List<Expression> arguments) {
         this.token = token;
         this.function = function;
@@ -44,5 +46,11 @@ public class CallExpression implements Expression {
 
     @Override
     public void expression() {
+    }
+
+    @Override
+    public String toString() {
+        return function + "(\n" + String.join(",\n",
+                arguments.stream().map(Expression::toString).collect(Collectors.toList())) + "\n)";
     }
 }

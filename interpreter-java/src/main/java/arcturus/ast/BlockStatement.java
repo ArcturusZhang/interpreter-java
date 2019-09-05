@@ -2,6 +2,7 @@ package arcturus.ast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import arcturus.ast.interfaces.Statement;
 import arcturus.token.Token;
@@ -42,5 +43,13 @@ public class BlockStatement implements Statement {
     @Override
     public void statement() {
     }
+
+    @Override
+    public String toString() {
+        var list = statements.stream().map(Statement::toString).collect(Collectors.toList());
+        return String.format(PATTERN, String.join("\n", list));
+    }
+
+    private static final String PATTERN = "{\n%s\n} ";
 
 }

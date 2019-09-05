@@ -50,4 +50,10 @@ public class LetStatement implements Statement {
 
     }
 
+    @Override
+    public String toString() {
+        return String.format(PATTERN, name, expression);
+    }
+
+    private static final String PATTERN = "let %s = %s; ";
 }

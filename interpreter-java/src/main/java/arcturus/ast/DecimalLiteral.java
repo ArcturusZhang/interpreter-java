@@ -38,4 +38,9 @@ public class DecimalLiteral implements Expression {
 
     }
 
+    @Override
+    public String toString() {
+        return value.toString();
+    }
+
 }

@@ -2,6 +2,7 @@ package arcturus.ast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import arcturus.ast.interfaces.Node;
 import arcturus.ast.interfaces.Statement;
@@ -28,6 +29,11 @@ public class Program implements Node {
             return statements.get(0).tokenLiteral();
         }
         return "";
+    }
+
+    @Override
+    public String toString() {
+        return String.join("\n", statements.stream().map(Statement::toString).collect(Collectors.toList()));
     }
 
 }

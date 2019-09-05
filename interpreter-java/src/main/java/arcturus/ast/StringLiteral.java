@@ -35,4 +35,10 @@ public class StringLiteral implements Expression {
     public void expression() {
     }
 
+    @Override
+    public String toString() {
+        return String.format(PATTERN, value);
+    }
+
+    private static final String PATTERN = "\"%s\"";
 }

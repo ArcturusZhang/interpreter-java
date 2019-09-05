@@ -12,10 +12,11 @@ public class Repl {
 
     public static void Start(InputStream in, PrintStream out) {
         var scanner = new Scanner(in);
-        for (;;) {
+        while (true) {
             out.print(PROMPT);
             var line = scanner.nextLine();
-            if (line == null) break;
+            if (line == null)
+                break;
             var parser = new Parser(new Lexer(line));
             var program = parser.parse();
             for (var stmt : program.getStatements()) {

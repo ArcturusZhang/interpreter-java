@@ -52,4 +52,9 @@ public class PrefixExpression implements Expression {
 
     }
 
+    @Override
+    public String toString() {
+        return operator + " " + right;
+    }
+
 }

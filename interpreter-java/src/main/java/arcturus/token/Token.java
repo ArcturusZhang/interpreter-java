@@ -53,6 +53,8 @@ public class Token {
         keywords.put("if", Type.IF);
         keywords.put("else", Type.ELSE);
         keywords.put("for", Type.FOR);
+        keywords.put("do", Type.DO);
+        keywords.put("while", Type.WHILE);
         keywords.put("return", Type.RETURN);
     }
 
@@ -100,6 +102,8 @@ public class Token {
         IF,     // if
         ELSE,   // else
         FOR,    // for
+        DO,     // do
+        WHILE,  // while
         RETURN, // return
     }
 }

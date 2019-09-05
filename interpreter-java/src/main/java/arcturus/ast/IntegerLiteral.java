@@ -9,7 +9,7 @@ public class IntegerLiteral implements Expression {
 
     private Token token;
     private BigInteger value;
-    
+
     public IntegerLiteral(Token token, BigInteger value) {
         this.token = token;
         this.value = value;
@@ -31,6 +31,11 @@ public class IntegerLiteral implements Expression {
     @Override
     public void expression() {
 
+    }
+
+    @Override
+    public String toString() {
+        return value.toString();
     }
 
 }

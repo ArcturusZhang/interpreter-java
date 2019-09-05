@@ -24,6 +24,7 @@ import arcturus.ast.StringLiteral;
 import arcturus.ast.interfaces.Expression;
 import arcturus.ast.interfaces.Statement;
 import arcturus.lexer.Lexer;
+import arcturus.parser.errors.IllegalTokenError;
 import arcturus.parser.errors.NoPrefixParseError;
 import arcturus.parser.errors.NumberFormatError;
 import arcturus.parser.errors.ParseError;
@@ -81,13 +82,17 @@ public class Parser {
         return errors;
     }
 
-    public void raiseTokenError(Type expected, Token got) {
-        errors.add(new TokenError(expected, got, lexer.getLine(), lexer.getCol()));
+    private void raiseError(ParseError error) {
+        errors.add(error);
     }
 
-    public void raiseNoPrefixParseError(Type type, Token got) {
-        errors.add(new NoPrefixParseError(type, got, lexer.getLine(), lexer.getCol()));
-    }
+    // public void raiseTokenError(Type expected, Token got) {
+    //     raiseError(new TokenError(expected, got, lexer.getLine(), lexer.getCol()));
+    // }
+
+    // public void raiseNoPrefixParseError(Type type, Token got) {
+    //     raiseError(new NoPrefixParseError(type, got, lexer.getLine(), lexer.getCol()));
+    // }
 
     public void nextToken() {
         currentToken = peekToken;
@@ -107,7 +112,7 @@ public class Parser {
             nextToken();
             return true;
         }
-        raiseTokenError(type, peekToken);
+        raiseError(new TokenError(type, peekToken, lexer.getLine(), lexer.getCol()));
         return false;
     }
 
@@ -139,7 +144,7 @@ public class Parser {
         case IDENTIFIER:
             return parseAssignStatement();
         default:
-            // todo
+            raiseError(new IllegalTokenError(currentToken, lexer.getLine(), lexer.getCol()));
             return null;
         }
     }
@@ -174,7 +179,7 @@ public class Parser {
     private Expression parseExpression(Precedence precedence) {
         var prefix = prefixParseMap.get(currentToken.getType());
         if (prefix == null) {
-            raiseNoPrefixParseError(currentToken.getType(), currentToken);
+            raiseError(new NoPrefixParseError(currentToken.getType(), currentToken, lexer.getLine(), lexer.getCol()));
             return null;
         }
         var leftExp = prefix.parse();
@@ -199,7 +204,7 @@ public class Parser {
             var value = new BigInteger(literal);
             return new IntegerLiteral(currentToken, value);
         } catch (NumberFormatException e) {
-            errors.add(new NumberFormatError(literal, "integer", lexer.getLine(), lexer.getCol()));
+            raiseError(new NumberFormatError(literal, "integer", lexer.getLine(), lexer.getCol()));
             return null;
         }
     }
@@ -210,7 +215,7 @@ public class Parser {
             var value = new BigDecimal(literal);
             return new DecimalLiteral(currentToken, value);
         } catch (NumberFormatException e) {
-            errors.add(new NumberFormatError(literal, "decimal", lexer.getLine(), lexer.getCol()));
+            raiseError(new NumberFormatError(literal, "decimal", lexer.getLine(), lexer.getCol()));
             return null;
         }
     }
@@ -273,7 +278,7 @@ public class Parser {
         }
         nextToken();
         if (!currentTokenIs(Type.IDENTIFIER)) {
-            raiseTokenError(Type.IDENTIFIER, currentToken);
+            raiseError(new TokenError(Type.IDENTIFIER, currentToken, lexer.getLine(), lexer.getCol()));
             return null;
         }
         identifiers.add(new Identifier(currentToken, currentToken.getLiteral()));
@@ -281,7 +286,7 @@ public class Parser {
             nextToken(); // current token is comma
             nextToken(); // skip comma
             if (!currentTokenIs(Type.IDENTIFIER)) {
-                raiseTokenError(Type.IDENTIFIER, currentToken);
+                raiseError(new TokenError(Type.IDENTIFIER, currentToken, lexer.getLine(), lexer.getCol()));
                 return null;
             }
             identifiers.add(new Identifier(currentToken, currentToken.getLiteral()));
@@ -339,6 +344,7 @@ public class Parser {
         nextToken(); // skip =
         var assign = new AssignStatement(identifierToken, new Identifier(identifierToken, identifierToken.getLiteral()));
         assign.setValue(parseExpression(Precedence.LOWEST));
+        if (!expectPeek(Type.SEMICOLON)) return null;
         return assign;
     }
 }

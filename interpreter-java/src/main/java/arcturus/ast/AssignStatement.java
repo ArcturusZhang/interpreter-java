@@ -52,4 +52,10 @@ public class AssignStatement implements Statement {
     public void statement() {
     }
 
+    @Override
+    public String toString() {
+        return String.format(PATTERN, variable, value);
+    }
+
+    private static final String PATTERN = "%s = %s; ";
 }

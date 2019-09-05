@@ -39,4 +39,10 @@ public class ReturnStatement implements Statement {
 
     }
 
+    @Override
+    public String toString() {
+        return String.format(PATTERN, returnValue);
+    }
+
+    private static final String PATTERN = "return %s; ";
 }

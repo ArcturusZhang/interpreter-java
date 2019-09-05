@@ -1,13 +1,14 @@
 package arcturus.ast;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import arcturus.ast.interfaces.Expression;
 import arcturus.token.Token;
 
 public class FunctionLiteral implements Expression {
 
-    private Token token;
+    private Token token; // should always be FUNCTION
     private List<Identifier> parameters;
     private BlockStatement body;
 
@@ -59,4 +60,11 @@ public class FunctionLiteral implements Expression {
     public void expression() {
     }
 
+    @Override
+    public String toString() {
+        var params = parameters.stream().map(Identifier::toString).collect(Collectors.toList());
+        return String.format(PATTERN, String.join(", ", params), body);
+    }
+
+    private static final String PATTERN = "func ( %s ) %s";
 }
