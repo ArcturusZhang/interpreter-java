@@ -2,10 +2,13 @@ package arcturus.repl;
 
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.List;
 import java.util.Scanner;
 
+import arcturus.evaluator.Evaluator;
 import arcturus.lexer.Lexer;
 import arcturus.parser.Parser;
+import arcturus.parser.errors.ParseError;
 
 public class Repl {
     private static final String PROMPT = ">> ";
@@ -19,10 +22,21 @@ public class Repl {
                 break;
             var parser = new Parser(new Lexer(line));
             var program = parser.parse();
-            for (var stmt : program.getStatements()) {
-                System.out.println(stmt);
+            if (!checkParseErrors(parser.getErrors(), out)) {
+                var evaluator = new Evaluator();
+                out.println(evaluator.eval(program));
             }
         }
         scanner.close();
+    }
+
+    private static boolean checkParseErrors(List<ParseError> errors, PrintStream out) {
+        int count = errors.size();
+        if (count == 0) return false;
+        out.println(String.format("There are %d error(s) in parsing", count));
+        for (var e : errors) {
+            out.println(e.errorMessage());
+        }
+        return true;
     }
 }

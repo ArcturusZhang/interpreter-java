@@ -3,7 +3,7 @@ package arcturus.object;
 public class BooleanObject implements Object {
     private boolean value;
 
-    public BooleanObject(boolean value) {
+    private BooleanObject(boolean value) {
         this.value = value;
     }
 
@@ -20,5 +20,8 @@ public class BooleanObject implements Object {
     public String inspect() {
         return String.valueOf(value);
     }
+
+    public static final BooleanObject TRUE = new BooleanObject(true);
+    public static final BooleanObject FALSE = new BooleanObject(false);
 
 }
