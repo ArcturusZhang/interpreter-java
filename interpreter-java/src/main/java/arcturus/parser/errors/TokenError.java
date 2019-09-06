@@ -4,7 +4,7 @@ import arcturus.token.Token;
 import arcturus.token.Token.Type;
 
 public final class TokenError implements ParseError {
-    public static final String PARSEERROR_FORMAT = "Parsing error, expecting token %s, but got %s: line %d column %d";
+    public static final String PARSEERROR_FORMAT = "Parse error, expecting token %s, but got %s: line %d column %d";
     private int line;
     private int col;
     private Type expected;

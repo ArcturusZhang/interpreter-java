@@ -12,8 +12,12 @@ import arcturus.ast.BlockStatement;
 import arcturus.ast.BooleanLiteral;
 import arcturus.ast.CallExpression;
 import arcturus.ast.DecimalLiteral;
+import arcturus.ast.DoStatement;
+import arcturus.ast.ExpressionStatement;
+import arcturus.ast.ForStatement;
 import arcturus.ast.FunctionLiteral;
 import arcturus.ast.Identifier;
+import arcturus.ast.IfStatement;
 import arcturus.ast.InfixExpression;
 import arcturus.ast.IntegerLiteral;
 import arcturus.ast.LetStatement;
@@ -21,6 +25,7 @@ import arcturus.ast.PrefixExpression;
 import arcturus.ast.Program;
 import arcturus.ast.ReturnStatement;
 import arcturus.ast.StringLiteral;
+import arcturus.ast.WhileStatement;
 import arcturus.ast.interfaces.Expression;
 import arcturus.ast.interfaces.Statement;
 import arcturus.lexer.Lexer;
@@ -54,25 +59,23 @@ public class Parser {
         registerPrefix(this::parseBooleanLiteral, Type.TRUE, Type.FALSE);
         registerPrefix(this::parsePrefixExpression, Type.BANG, Type.MINUS);
         registerPrefix(this::parseGroupedExpression, Type.LPAREN);
-        // registerPrefix(this::parseIfExpression, Type.IF);
-        // registerPrefix(this::parseForExpression, Type.FOR);
         registerPrefix(this::parseFunctionLiteral, Type.FUNCTION);
         registerPrefix(this::parseStringLiteral, Type.STRING);
         registerPrefix(this::parseArrayLiteral, Type.LBRACKET);
         infixParseMap = new HashMap<>();
-        registerInfix(this::parseInfixExpression, Type.PLUS, Type.MINUS, Type.ASTERISK, Type.SLASH, 
-        Type.EQ, Type.NE, Type.LT, Type.GT, Type.LE, Type.GE);
+        registerInfix(this::parseInfixExpression, Type.PLUS, Type.MINUS, Type.ASTERISK, Type.SLASH, Type.EQ, Type.NE,
+                Type.LT, Type.GT, Type.LE, Type.GE);
         registerInfix(this::parseCallExpression, Type.LPAREN);
         // registerInfix(this::parseIndexExpression, Type.LBRACKET);
     }
 
-    private void registerPrefix(PrefixParseFunction function, Type ... types) {
+    private void registerPrefix(PrefixParseFunction function, Type... types) {
         for (var type : types) {
             prefixParseMap.put(type, function);
         }
     }
 
-    private void registerInfix(InfixParseFunction function, Type ... types) {
+    private void registerInfix(InfixParseFunction function, Type... types) {
         for (var type : types) {
             infixParseMap.put(type, function);
         }
@@ -85,14 +88,6 @@ public class Parser {
     private void raiseError(ParseError error) {
         errors.add(error);
     }
-
-    // public void raiseTokenError(Type expected, Token got) {
-    //     raiseError(new TokenError(expected, got, lexer.getLine(), lexer.getCol()));
-    // }
-
-    // public void raiseNoPrefixParseError(Type type, Token got) {
-    //     raiseError(new NoPrefixParseError(type, got, lexer.getLine(), lexer.getCol()));
-    // }
 
     public void nextToken() {
         currentToken = peekToken;
@@ -142,10 +137,17 @@ public class Parser {
         case RETURN:
             return parseReturnStatement();
         case IDENTIFIER:
-            return parseAssignStatement();
+            return parseIdentifierStatement();
+        case IF:
+            return parseIfStatement();
+        case FOR:
+            return parseForStatement();
+        case DO:
+            return parseDoStatement();
+        case WHILE:
+            return parseWhileStatement();
         default:
-            raiseError(new IllegalTokenError(currentToken, lexer.getLine(), lexer.getCol()));
-            return null;
+            return parseExpressionStatement();
         }
     }
 
@@ -210,7 +212,7 @@ public class Parser {
     }
 
     private Expression parseDecimalLiteral() {
-        var literal =currentToken.getLiteral();
+        var literal = currentToken.getLiteral();
         try {
             var value = new BigDecimal(literal);
             return new DecimalLiteral(currentToken, value);
@@ -249,14 +251,6 @@ public class Parser {
         return expression;
     }
 
-    // private Expression parseIfExpression() {
-    //     return null;
-    // }
-
-    // private Expression parseForExpression() {
-    //     return null;
-    // }
-
     private Expression parseFunctionLiteral() {
         var funcLiteral = new FunctionLiteral(currentToken);
         if (!expectPeek(Type.LPAREN)) {
@@ -291,7 +285,8 @@ public class Parser {
             }
             identifiers.add(new Identifier(currentToken, currentToken.getLiteral()));
         }
-        if (!expectPeek(Type.RPAREN)) return null;
+        if (!expectPeek(Type.RPAREN))
+            return null;
         return identifiers;
     }
 
@@ -334,17 +329,52 @@ public class Parser {
             nextToken();
             results.add(parseExpression(Precedence.LOWEST));
         }
-        if (!expectPeek(end)) return null;
+        if (!expectPeek(end))
+            return null;
         return results;
     }
 
+    private Statement parseIdentifierStatement() {
+        switch (peekToken.getType()) {
+        case ASSIGN:
+            return parseAssignStatement(); // todo -- array element assignment
+        default:
+            return parseExpressionStatement();
+        }
+    }
+
+    private ExpressionStatement parseExpressionStatement() {
+        var stmt = new ExpressionStatement(currentToken);
+        stmt.setExpression(parseExpression(Precedence.LOWEST));
+        while (peekTokenIs(Type.SEMICOLON))
+            nextToken();
+        return stmt;
+    }
+
     private AssignStatement parseAssignStatement() {
-        var identifierToken = currentToken;
-        if (!expectPeek(Type.ASSIGN)) return null; // todo -- array element assignment
+        var assign = new AssignStatement(currentToken, new Identifier(currentToken, currentToken.getLiteral()));
+        if (!expectPeek(Type.ASSIGN))
+            return null; // this should not happen
         nextToken(); // skip =
-        var assign = new AssignStatement(identifierToken, new Identifier(identifierToken, identifierToken.getLiteral()));
         assign.setValue(parseExpression(Precedence.LOWEST));
-        if (!expectPeek(Type.SEMICOLON)) return null;
+        if (!expectPeek(Type.SEMICOLON))
+            return null;
         return assign;
+    }
+
+    private IfStatement parseIfStatement() {
+        return null;
+    }
+
+    private ForStatement parseForStatement() {
+        return null;
+    }
+
+    private DoStatement parseDoStatement() {
+        return null;
+    }
+
+    private WhileStatement parseWhileStatement() {
+        return null;
     }
 }

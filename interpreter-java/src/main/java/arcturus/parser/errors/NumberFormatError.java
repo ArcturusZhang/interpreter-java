@@ -4,7 +4,7 @@ public class NumberFormatError implements ParseError {
     private String message;
 
     public NumberFormatError(String literal, String type, int line, int col) {
-        message = String.format("Parse error, cannot parse %s as %s: line %d, col %d", literal, type, line, col);
+        message = String.format("Parse error, cannot parse %s as %s: line %d, column %d", literal, type, line, col);
     }
 
     @Override

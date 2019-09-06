@@ -6,7 +6,7 @@ public class IllegalTokenError implements ParseError {
 
     private String message;
     public IllegalTokenError(Token token, int line, int col) {
-        message = String.format("Parse error, illegal token %s: line %d, col %d", token, line, col);
+        message = String.format("Parse error, illegal token %s: line %d, column %d", token, line, col);
     }
 
     @Override
