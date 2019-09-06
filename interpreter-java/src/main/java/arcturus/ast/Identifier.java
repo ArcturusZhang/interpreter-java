@@ -1,6 +1,7 @@
 package arcturus.ast;
 
 import arcturus.ast.interfaces.Expression;
+import arcturus.object.Object;
 import arcturus.token.Token;
 
 public class Identifier implements Expression {
@@ -27,13 +28,14 @@ public class Identifier implements Expression {
     }
 
     @Override
-    public void expression() {
-
+    public String toString() {
+        return value;
     }
 
     @Override
-    public String toString() {
-        return value;
+    public Object evaluate() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

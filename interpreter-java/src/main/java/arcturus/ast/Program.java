@@ -6,8 +6,11 @@ import java.util.stream.Collectors;
 
 import arcturus.ast.interfaces.Node;
 import arcturus.ast.interfaces.Statement;
+import arcturus.evaluator.Evaluable;
+import arcturus.object.NullObject;
+import arcturus.object.Object;
 
-public class Program implements Node {
+public class Program implements Node, Evaluable {
 
     private List<Statement> statements;
 
@@ -34,6 +37,18 @@ public class Program implements Node {
     @Override
     public String toString() {
         return String.join("\n", statements.stream().map(Statement::toString).collect(Collectors.toList()));
+    }
+
+    @Override
+    public Object evaluate() {
+        Object result = NullObject.NULL;
+        if (statements.size() > 0) {
+            for (var stmt : statements) {
+                result = stmt.evaluate();
+            }
+            return result;
+        } 
+        return result;
     }
 
 }

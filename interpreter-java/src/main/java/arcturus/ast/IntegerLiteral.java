@@ -3,6 +3,8 @@ package arcturus.ast;
 import java.math.BigInteger;
 
 import arcturus.ast.interfaces.Expression;
+import arcturus.object.IntegerObject;
+import arcturus.object.Object;
 import arcturus.token.Token;
 
 public class IntegerLiteral implements Expression {
@@ -29,13 +31,13 @@ public class IntegerLiteral implements Expression {
     }
 
     @Override
-    public void expression() {
-
+    public String toString() {
+        return value.toString();
     }
 
     @Override
-    public String toString() {
-        return value.toString();
+    public Object evaluate() {
+        return new IntegerObject(value);
     }
 
 }

@@ -2,6 +2,7 @@ package arcturus.ast;
 
 import arcturus.ast.interfaces.Expression;
 import arcturus.ast.interfaces.Statement;
+import arcturus.object.Object;
 import arcturus.token.Token;
 
 public class LetStatement implements Statement {
@@ -46,14 +47,14 @@ public class LetStatement implements Statement {
     }
 
     @Override
-    public void statement() {
-
-    }
-
-    @Override
     public String toString() {
         return String.format(PATTERN, name, expression);
     }
 
     private static final String PATTERN = "let %s = %s; ";
+
+    @Override
+    public Object evaluate() {
+        return expression.evaluate();
+    }
 }

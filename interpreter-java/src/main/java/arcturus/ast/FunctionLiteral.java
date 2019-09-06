@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import arcturus.ast.interfaces.Expression;
+import arcturus.object.Object;
 import arcturus.token.Token;
 
 public class FunctionLiteral implements Expression {
@@ -22,7 +23,7 @@ public class FunctionLiteral implements Expression {
     public Token getToken() {
         return token;
     }
-    
+
     /**
      * @return the parameters
      */
@@ -36,7 +37,7 @@ public class FunctionLiteral implements Expression {
     public BlockStatement getBody() {
         return body;
     }
-    
+
     /**
      * @param parameters the parameters to set
      */
@@ -57,14 +58,16 @@ public class FunctionLiteral implements Expression {
     }
 
     @Override
-    public void expression() {
-    }
-
-    @Override
     public String toString() {
         var params = parameters.stream().map(Identifier::toString).collect(Collectors.toList());
         return String.format(PATTERN, String.join(", ", params), body);
     }
 
     private static final String PATTERN = "func ( %s ) %s";
+
+    @Override
+    public Object evaluate() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

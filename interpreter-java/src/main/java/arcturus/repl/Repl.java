@@ -12,6 +12,7 @@ import arcturus.parser.errors.ParseError;
 
 public class Repl {
     private static final String PROMPT = ">> ";
+    public static int decimalCount = 10;
 
     public static void Start(InputStream in, PrintStream out) {
         var scanner = new Scanner(in);
@@ -24,7 +25,8 @@ public class Repl {
             var program = parser.parse();
             if (!checkParseErrors(parser.getErrors(), out)) {
                 var evaluator = new Evaluator();
-                out.println(evaluator.eval(program));
+                var result = evaluator.eval(program);
+                out.println(result);
             }
         }
         scanner.close();

@@ -25,4 +25,9 @@ public class IntegerObject implements Object {
         return value.toString();
     }
 
+    @Override
+    public String toString() {
+        return value.toString();
+    }
+
 }

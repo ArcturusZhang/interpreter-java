@@ -1,5 +1,6 @@
 package arcturus.ast.interfaces;
 
-public interface Expression extends Node {
-    void expression();
+import arcturus.evaluator.Evaluable;
+
+public interface Expression extends Node, Evaluable {
 }

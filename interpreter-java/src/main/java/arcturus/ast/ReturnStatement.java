@@ -2,6 +2,7 @@ package arcturus.ast;
 
 import arcturus.ast.interfaces.Expression;
 import arcturus.ast.interfaces.Statement;
+import arcturus.object.Object;
 import arcturus.token.Token;
 
 public class ReturnStatement implements Statement {
@@ -35,14 +36,15 @@ public class ReturnStatement implements Statement {
     }
 
     @Override
-    public void statement() {
-
-    }
-
-    @Override
     public String toString() {
         return String.format(PATTERN, returnValue);
     }
 
     private static final String PATTERN = "return %s; ";
+
+    @Override
+    public Object evaluate() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

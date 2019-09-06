@@ -1,12 +1,15 @@
 package arcturus.ast;
 
 import arcturus.ast.interfaces.Expression;
+import arcturus.object.Object;
+import arcturus.object.StringObject;
 import arcturus.token.Token;
 
 public class StringLiteral implements Expression {
 
     private Token token;
     private String value;
+
     public StringLiteral(Token token, String value) {
         this.token = token;
         this.value = value;
@@ -32,13 +35,14 @@ public class StringLiteral implements Expression {
     }
 
     @Override
-    public void expression() {
-    }
-
-    @Override
     public String toString() {
         return String.format(PATTERN, value);
     }
 
     private static final String PATTERN = "\"%s\"";
+
+    @Override
+    public Object evaluate() {
+        return new StringObject(value);
+    }
 }

@@ -14,6 +14,11 @@ public class NullObject implements Object {
         return "null";
     }
 
+    @Override
+    public String toString() {
+        return inspect();
+    }
+
     public static final NullObject NULL = new NullObject();
 
 }

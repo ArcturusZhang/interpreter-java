@@ -9,6 +9,17 @@ public interface Object {
         INTEGER,
         DECIMAL,
         BOOLEAN,
-        FUNCTION,
+        STRING,
+        FUNCTION;
+
+        public boolean isNumber() {
+            return this == INTEGER || this == DECIMAL;
+        }
+
+        public static Type max(Type t1, Type t2) {
+            if (!t1.isNumber() && !t2.isNumber()) return NULL;
+            if (t1 == DECIMAL || t2 == DECIMAL) return DECIMAL;
+            return INTEGER;
+        }
     }
 }

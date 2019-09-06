@@ -1,6 +1,8 @@
 package arcturus.ast;
 
 import arcturus.ast.interfaces.Expression;
+import arcturus.object.BooleanObject;
+import arcturus.object.Object;
 import arcturus.token.Token;
 
 public class BooleanLiteral implements Expression {
@@ -30,13 +32,13 @@ public class BooleanLiteral implements Expression {
     }
 
     @Override
-    public void expression() {
-
+    public String toString() {
+        return String.valueOf(value);
     }
 
     @Override
-    public String toString() {
-        return String.valueOf(value);
+    public Object evaluate() {
+        return BooleanObject.getBoolean(value);
     }
 
 }

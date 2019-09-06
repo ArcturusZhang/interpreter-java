@@ -1,5 +1,6 @@
 package arcturus.ast.interfaces;
 
-public interface Statement extends Node {
-    void statement();
+import arcturus.evaluator.Evaluable;
+
+public interface Statement extends Node, Evaluable {
 }

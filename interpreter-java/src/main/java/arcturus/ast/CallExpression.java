@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import arcturus.ast.interfaces.Expression;
+import arcturus.object.Object;
 import arcturus.token.Token;
 
 public class CallExpression implements Expression {
@@ -45,12 +46,14 @@ public class CallExpression implements Expression {
     }
 
     @Override
-    public void expression() {
+    public String toString() {
+        return function + "(\n"
+                + String.join(",\n", arguments.stream().map(Expression::toString).collect(Collectors.toList())) + "\n)";
     }
 
     @Override
-    public String toString() {
-        return function + "(\n" + String.join(",\n",
-                arguments.stream().map(Expression::toString).collect(Collectors.toList())) + "\n)";
+    public Object evaluate() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }
