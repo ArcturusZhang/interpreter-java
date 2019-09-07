@@ -1,7 +1,5 @@
 package arcturus.parser;
 
-import java.math.BigInteger;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -10,13 +8,13 @@ import arcturus.lexer.Lexer;
 import arcturus.object.IntegerObject;
 import arcturus.object.Object;
 
-public class StatementTest {
+public class WhileStatementTest {
     @Test
-    public void testIfStatement() {
+    public void testWhileStatement() {
         var items = new Item[] {
-            new Item("if (5 == 5) { 1; } else {2; }", new IntegerObject(new BigInteger("1"))),
+            new Item("let sum = 0; let i = 0; while (i <= 10) { sum = sum + i; i = i + 1;} sum;", new IntegerObject("55"))
         };
-        for(var item : items) {
+        for (var item : items) {
             testItem(item);
         }
     }
@@ -24,8 +22,7 @@ public class StatementTest {
     private void testItem(Item item) {
         var parser = new Parser(new Lexer(item.input));
         var program = parser.parse();
-        var root = new Environment(null);
-        var result = program.evaluate(root);
+        var result = program.evaluate(new Environment(null));
         Assert.assertEquals(item.expect, result);
     }
 

@@ -80,8 +80,10 @@ public class IfStatement implements Statement {
         if (result instanceof ErrorObject) return result;
         if (result == BooleanObject.TRUE) {
             return thenStatement.evaluate(env);
-        } else {
+        } else if (result == BooleanObject.FALSE){
             return elseStatement != null ? elseStatement.evaluate(env) : NullObject.NULL;
+        } else {
+            return new ErrorObject("Error: condition of if statement must be boolean");
         }
     }
 

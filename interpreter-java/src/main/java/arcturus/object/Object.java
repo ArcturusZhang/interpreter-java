@@ -11,7 +11,7 @@ public abstract class Object {
     }
 
     public static enum Type {
-        NULL, INTEGER, DECIMAL, BOOLEAN, STRING, FUNCTION, RETURN_VALUE, ERROR;
+        NULL, INTEGER, DECIMAL, BOOLEAN, STRING, FUNCTION, RETURN_VALUE, CONTINUE, BREAK, ERROR;
 
         public boolean isNumber() {
             return this == INTEGER || this == DECIMAL;

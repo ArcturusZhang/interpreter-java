@@ -293,7 +293,7 @@ public class Parser {
     private BlockStatement parseBlockStatement() {
         var block = new BlockStatement(currentToken);
         nextToken(); // skip {
-        while (!currentTokenIs(Type.RBRACE)) {
+        while (!currentTokenIs(Type.RBRACE) && !currentTokenIs(Type.EOF)) {
             var statement = parseStatement();
             if (statement != null) {
                 block.addStatement(statement);
@@ -389,6 +389,15 @@ public class Parser {
     }
 
     private WhileStatement parseWhileStatement() {
-        return null;
+        var whileStatement = new WhileStatement(currentToken);
+        if (!expectPeek(Type.LPAREN))
+            return null;
+        nextToken(); // skip (
+        whileStatement.setCondition(parseExpression(Precedence.LOWEST));
+        if (!expectPeek(Type.RPAREN))
+            return null;
+        nextToken(); // skip )
+        whileStatement.setBody(parseBlockStatement());
+        return whileStatement;
     }
 }

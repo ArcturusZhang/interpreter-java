@@ -9,6 +9,10 @@ public class IntegerObject extends Object {
         this.value = value;
     }
 
+    public IntegerObject(String value) {
+        this.value = new BigInteger(value);
+    }
+
     /**
      * @return the value
      */
