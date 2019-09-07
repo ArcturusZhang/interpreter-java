@@ -1,4 +1,4 @@
-package arcturus.object;
+package arcturus.object.errors;
 
 public class TypeMismatchError extends ErrorObject {
 

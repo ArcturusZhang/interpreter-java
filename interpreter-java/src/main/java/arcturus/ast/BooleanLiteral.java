@@ -1,6 +1,7 @@
 package arcturus.ast;
 
 import arcturus.ast.interfaces.Expression;
+import arcturus.evaluator.env.Environment;
 import arcturus.object.BooleanObject;
 import arcturus.object.Object;
 import arcturus.token.Token;
@@ -37,7 +38,7 @@ public class BooleanLiteral implements Expression {
     }
 
     @Override
-    public Object evaluate() {
+    public Object evaluate(Environment env) {
         return BooleanObject.getBoolean(value);
     }
 

@@ -4,6 +4,7 @@ import java.math.BigInteger;
 
 public class IntegerObject extends Object {
     private BigInteger value;
+
     public IntegerObject(BigInteger value) {
         this.value = value;
     }
@@ -23,6 +24,15 @@ public class IntegerObject extends Object {
     @Override
     public String inspect() {
         return value.toString();
+    }
+
+    @Override
+    public boolean equals(java.lang.Object obj) {
+        if (obj == null)
+            return false;
+        if (this.getClass() != obj.getClass())
+            return false;
+        return value.compareTo(((IntegerObject) obj).value) == 0;
     }
 
 }

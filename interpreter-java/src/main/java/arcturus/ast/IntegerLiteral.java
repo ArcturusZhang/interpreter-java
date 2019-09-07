@@ -3,6 +3,7 @@ package arcturus.ast;
 import java.math.BigInteger;
 
 import arcturus.ast.interfaces.Expression;
+import arcturus.evaluator.env.Environment;
 import arcturus.object.IntegerObject;
 import arcturus.object.Object;
 import arcturus.token.Token;
@@ -36,7 +37,7 @@ public class IntegerLiteral implements Expression {
     }
 
     @Override
-    public Object evaluate() {
+    public Object evaluate(Environment env) {
         return new IntegerObject(value);
     }
 

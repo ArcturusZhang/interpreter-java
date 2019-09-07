@@ -1,7 +1,9 @@
 package arcturus.ast;
 
 import arcturus.ast.interfaces.Expression;
+import arcturus.evaluator.env.Environment;
 import arcturus.object.Object;
+import arcturus.object.errors.VariableNotDeclaredError;
 import arcturus.token.Token;
 
 public class Identifier implements Expression {
@@ -33,9 +35,11 @@ public class Identifier implements Expression {
     }
 
     @Override
-    public Object evaluate() {
-        // TODO Auto-generated method stub
-        return null;
+    public Object evaluate(Environment env) {
+        // if variable does not exist, return an error.
+        if (!env.contains(value)) return new VariableNotDeclaredError(this);
+        // if variable exists, retrieve its value from env.
+        return env.get(value);
     }
 
 }

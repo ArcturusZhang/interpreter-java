@@ -1,12 +1,13 @@
 package arcturus.ast;
 
 import arcturus.ast.interfaces.Expression;
+import arcturus.evaluator.env.Environment;
 import arcturus.object.BooleanObject;
 import arcturus.object.DecimalObject;
 import arcturus.object.IntegerObject;
 import arcturus.object.Object;
-import arcturus.object.TypeMismatchError;
 import arcturus.object.Object.Type;
+import arcturus.object.errors.TypeMismatchError;
 import arcturus.token.Token;
 
 public class PrefixExpression implements Expression {
@@ -59,8 +60,8 @@ public class PrefixExpression implements Expression {
     }
 
     @Override
-    public Object evaluate() {
-        var rightValue = right.evaluate();
+    public Object evaluate(Environment env) {
+        var rightValue = right.evaluate(env);
         switch (operator) {
         case "!":
             return evalBangObject(rightValue);

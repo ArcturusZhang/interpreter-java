@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import arcturus.ast.interfaces.Statement;
+import arcturus.evaluator.env.Environment;
 import arcturus.object.NullObject;
 import arcturus.object.Object;
 import arcturus.token.Token;
@@ -51,11 +52,11 @@ public class BlockStatement implements Statement {
     private static final String PATTERN = "{\n%s\n} ";
 
     @Override
-    public Object evaluate() {
+    public Object evaluate(Environment env) {
         Object result = NullObject.NULL;
         if (statements.isEmpty()) return result;
         for (var stmt : statements) {
-            result = stmt.evaluate();
+            result = stmt.evaluate(env);
         }
         return result;
     }

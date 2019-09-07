@@ -2,9 +2,11 @@ package arcturus.ast;
 
 import arcturus.ast.interfaces.Expression;
 import arcturus.ast.interfaces.Statement;
+import arcturus.evaluator.env.Environment;
 import arcturus.object.BooleanObject;
 import arcturus.object.NullObject;
 import arcturus.object.Object;
+import arcturus.object.errors.ErrorObject;
 import arcturus.token.Token;
 
 public class IfStatement implements Statement {
@@ -73,12 +75,13 @@ public class IfStatement implements Statement {
     }
 
     @Override
-    public Object evaluate() {
-        var result = condition.evaluate();
+    public Object evaluate(Environment env) {
+        var result = condition.evaluate(env);
+        if (result instanceof ErrorObject) return result;
         if (result == BooleanObject.TRUE) {
-            return thenStatement.evaluate();
+            return thenStatement.evaluate(env);
         } else {
-            return elseStatement != null ? elseStatement.evaluate() : NullObject.NULL;
+            return elseStatement != null ? elseStatement.evaluate(env) : NullObject.NULL;
         }
     }
 

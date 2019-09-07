@@ -7,9 +7,10 @@ import java.util.stream.Collectors;
 import arcturus.ast.interfaces.Node;
 import arcturus.ast.interfaces.Statement;
 import arcturus.evaluator.Evaluable;
-import arcturus.object.ErrorObject;
+import arcturus.evaluator.env.Environment;
 import arcturus.object.NullObject;
 import arcturus.object.Object;
+import arcturus.object.errors.ErrorObject;
 
 public class Program implements Node, Evaluable {
 
@@ -41,11 +42,11 @@ public class Program implements Node, Evaluable {
     }
 
     @Override
-    public Object evaluate() {
+    public Object evaluate(Environment env) {
         Object result = NullObject.NULL;
         if (statements.size() > 0) {
             for (var stmt : statements) {
-                result = stmt.evaluate();
+                result = stmt.evaluate(env);
                 if (result instanceof ErrorObject) return result;
             }
             return result;

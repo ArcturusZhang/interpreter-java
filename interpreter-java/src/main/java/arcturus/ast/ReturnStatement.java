@@ -2,6 +2,7 @@ package arcturus.ast;
 
 import arcturus.ast.interfaces.Expression;
 import arcturus.ast.interfaces.Statement;
+import arcturus.evaluator.env.Environment;
 import arcturus.object.Object;
 import arcturus.token.Token;
 
@@ -43,7 +44,7 @@ public class ReturnStatement implements Statement {
     private static final String PATTERN = "return %s; ";
 
     @Override
-    public Object evaluate() {
+    public Object evaluate(Environment env) {
         // TODO Auto-generated method stub
         return null;
     }

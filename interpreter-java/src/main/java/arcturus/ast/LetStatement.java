@@ -2,7 +2,9 @@ package arcturus.ast;
 
 import arcturus.ast.interfaces.Expression;
 import arcturus.ast.interfaces.Statement;
+import arcturus.evaluator.env.Environment;
 import arcturus.object.Object;
+import arcturus.object.errors.VariableExistsError;
 import arcturus.token.Token;
 
 public class LetStatement implements Statement {
@@ -54,7 +56,12 @@ public class LetStatement implements Statement {
     private static final String PATTERN = "let %s = %s; ";
 
     @Override
-    public Object evaluate() {
-        return expression.evaluate();
+    public Object evaluate(Environment env) {
+        // check if this variable exists in this environment. 
+        // if exist, throw an error. If not, assign this new variable
+        if (env.contains(name.getValue())) return new VariableExistsError(name);
+        var value = expression.evaluate(env);
+        env.put(name.getValue(), value);
+        return value;
     }
 }

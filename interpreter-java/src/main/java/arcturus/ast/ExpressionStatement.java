@@ -2,6 +2,7 @@ package arcturus.ast;
 
 import arcturus.ast.interfaces.Expression;
 import arcturus.ast.interfaces.Statement;
+import arcturus.evaluator.env.Environment;
 import arcturus.object.Object;
 import arcturus.token.Token;
 
@@ -40,8 +41,8 @@ public class ExpressionStatement implements Statement {
     }
 
     @Override
-    public Object evaluate() {
-        return expression.evaluate();
+    public Object evaluate(Environment env) {
+        return expression.evaluate(env);
     }
 
     @Override

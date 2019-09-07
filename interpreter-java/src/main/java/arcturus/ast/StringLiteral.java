@@ -1,6 +1,7 @@
 package arcturus.ast;
 
 import arcturus.ast.interfaces.Expression;
+import arcturus.evaluator.env.Environment;
 import arcturus.object.Object;
 import arcturus.object.StringObject;
 import arcturus.token.Token;
@@ -42,7 +43,7 @@ public class StringLiteral implements Expression {
     private static final String PATTERN = "\"%s\"";
 
     @Override
-    public Object evaluate() {
+    public Object evaluate(Environment env) {
         return new StringObject(value);
     }
 }

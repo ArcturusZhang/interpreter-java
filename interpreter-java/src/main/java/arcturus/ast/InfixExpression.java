@@ -8,12 +8,13 @@ import java.util.Map;
 import java.util.function.BiFunction;
 
 import arcturus.ast.interfaces.Expression;
+import arcturus.evaluator.env.Environment;
 import arcturus.object.BooleanObject;
 import arcturus.object.DecimalObject;
 import arcturus.object.IntegerObject;
 import arcturus.object.Object;
-import arcturus.object.TypeMismatchError;
 import arcturus.object.Object.Type;
+import arcturus.object.errors.TypeMismatchError;
 import arcturus.repl.Repl;
 import arcturus.token.Token;
 
@@ -84,10 +85,10 @@ public class InfixExpression implements Expression {
 
     // todo -- short cut evaluation for boolean
     @Override
-    public Object evaluate() {
-        var leftObj = left.evaluate();
-        var rightObj = right.evaluate();
-        var type = Type.max(leftObj.type(), rightObj.type());
+    public Object evaluate(Environment env) {
+        var leftObj = left.evaluate(env);
+        var rightObj = right.evaluate(env);
+        var type = Type.conform(leftObj.type(), rightObj.type());
         switch (type) {
         case INTEGER:
             return evalInteger((IntegerObject) leftObj, (IntegerObject) rightObj);

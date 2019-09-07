@@ -3,6 +3,7 @@ package arcturus.ast;
 import java.math.BigDecimal;
 
 import arcturus.ast.interfaces.Expression;
+import arcturus.evaluator.env.Environment;
 import arcturus.object.DecimalObject;
 import arcturus.object.Object;
 import arcturus.token.Token;
@@ -42,7 +43,7 @@ public class DecimalLiteral implements Expression {
     }
 
     @Override
-    public Object evaluate() {
+    public Object evaluate(Environment env) {
         return new DecimalObject(value);
     }
 

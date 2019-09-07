@@ -1,4 +1,6 @@
-package arcturus.object;
+package arcturus.object.errors;
+
+import arcturus.object.Object;
 
 public class ErrorObject extends Object {
     protected String message;

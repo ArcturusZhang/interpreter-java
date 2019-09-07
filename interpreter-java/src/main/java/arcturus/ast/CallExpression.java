@@ -1,10 +1,10 @@
 package arcturus.ast;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import arcturus.ast.interfaces.Expression;
+import arcturus.evaluator.env.Environment;
 import arcturus.object.Object;
 import arcturus.token.Token;
 
@@ -52,7 +52,7 @@ public class CallExpression implements Expression {
     }
 
     @Override
-    public Object evaluate() {
+    public Object evaluate(Environment env) {
         // TODO Auto-generated method stub
         return null;
     }

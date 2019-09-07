@@ -1,6 +1,7 @@
 package arcturus.ast;
 
 import arcturus.ast.interfaces.Statement;
+import arcturus.evaluator.env.Environment;
 import arcturus.object.Object;
 
 public class ForStatement implements Statement {
@@ -12,7 +13,7 @@ public class ForStatement implements Statement {
     }
 
     @Override
-    public Object evaluate() {
+    public Object evaluate(Environment env) {
         // TODO Auto-generated method stub
         return null;
     }

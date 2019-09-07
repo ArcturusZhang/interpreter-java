@@ -2,7 +2,9 @@ package arcturus.ast;
 
 import arcturus.ast.interfaces.Expression;
 import arcturus.ast.interfaces.Statement;
+import arcturus.evaluator.env.Environment;
 import arcturus.object.Object;
+import arcturus.object.errors.VariableNotDeclaredError;
 import arcturus.token.Token;
 
 public class AssignStatement implements Statement {
@@ -57,7 +59,13 @@ public class AssignStatement implements Statement {
     private static final String PATTERN = "%s = %s; ";
 
     @Override
-    public Object evaluate() {
-        return value.evaluate();
+    public Object evaluate(Environment env) {
+        // if variable does not exist, return an error
+        if (!env.contains(variable.getValue()))
+        return new VariableNotDeclaredError(variable);
+        // if variable exists, evaluate its value, and put it into env
+        var result = value.evaluate(env);
+        env.put(variable.getValue(), result);
+        return result;
     }
 }
