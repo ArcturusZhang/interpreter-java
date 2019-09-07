@@ -1,11 +1,11 @@
 package arcturus.ast;
 
 import arcturus.ast.interfaces.Expression;
-import arcturus.evaluator.EvaluateException;
 import arcturus.object.BooleanObject;
 import arcturus.object.DecimalObject;
 import arcturus.object.IntegerObject;
 import arcturus.object.Object;
+import arcturus.object.TypeMismatchError;
 import arcturus.object.Object.Type;
 import arcturus.token.Token;
 
@@ -67,13 +67,13 @@ public class PrefixExpression implements Expression {
         case "-":
             return evalMinusObject(rightValue);
         default:
-            throw new EvaluateException(String.format("Unknown operator %s", operator));
+            return new TypeMismatchError(operator, rightValue.type());
         }
     }
 
     private Object evalBangObject(Object right) {
         if (right.type() != Type.BOOLEAN)
-            throw new EvaluateException(String.format("Operator ! cannot be used on type %s", right.type()));
+            return new TypeMismatchError(operator, right.type());
         var object = (BooleanObject) right;
         return BooleanObject.getBoolean(!object.getValue());
     }
@@ -87,7 +87,7 @@ public class PrefixExpression implements Expression {
             var decimalObject = (DecimalObject) right;
             return new DecimalObject(decimalObject.getValue().negate());
         default:
-            throw new EvaluateException(String.format("Operator - cannot be used on type %s", right.type()));
+            return new TypeMismatchError(operator, right.type());
         }
     }
 

@@ -112,6 +112,12 @@ public class Lexer {
         case '\'':
             token = new Token(Type.SINGLEQUOTE, this.ch);
             break;
+        case '&':
+            token = readAnd();
+            break;
+        case '|':
+            token = readOr();
+            break;
         case (char) 0:
             token = new Token(Type.EOF, "");
             break;
@@ -236,6 +242,26 @@ public class Lexer {
             return new Token(Type.NE, "!=");
         }
         return new Token(Type.BANG, this.ch);
+    }
+
+    private Token readAnd() {
+        if (this.ch != '&')
+        throw new LexerException("This should not happen");
+        if (peekChar() == '&') {
+            readChar();
+            return new Token(Type.ADD, "&&");
+        }
+        return new Token(Type.ADD_BITWISE, this.ch);
+    }
+
+    private Token readOr() {
+        if (this.ch != '|')
+        throw new LexerException("This should not happen");
+        if (peekChar() == '|') {
+            readChar();
+            return new Token(Type.OR, "||");
+        }
+        return new Token(Type.OR_BITWISE, this.ch);
     }
 
     private String readIdentifier() {

@@ -63,8 +63,9 @@ public class Parser {
         registerPrefix(this::parseStringLiteral, Type.STRING);
         registerPrefix(this::parseArrayLiteral, Type.LBRACKET);
         infixParseMap = new HashMap<>();
-        registerInfix(this::parseInfixExpression, Type.PLUS, Type.MINUS, Type.ASTERISK, Type.SLASH, Type.EQ, Type.NE,
-                Type.LT, Type.GT, Type.LE, Type.GE);
+        registerInfix(this::parseInfixExpression, Type.PLUS, Type.MINUS, Type.ASTERISK, Type.SLASH); // arithemic
+        registerInfix(this::parseInfixExpression, Type.EQ, Type.NE, Type.LT, Type.GT, Type.LE, Type.GE); // relation
+        registerInfix(this::parseInfixExpression, Type.ADD, Type.OR); // logical
         registerInfix(this::parseCallExpression, Type.LPAREN);
         // registerInfix(this::parseIndexExpression, Type.LBRACKET);
     }

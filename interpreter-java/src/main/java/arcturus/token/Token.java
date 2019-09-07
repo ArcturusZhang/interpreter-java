@@ -95,6 +95,10 @@ public class Token {
         RBRACKET,   // ]
         QUOTE,  // "
         SINGLEQUOTE,    // '
+        ADD_BITWISE,    // &
+        ADD,   // &&
+        OR_BITWISE, // |
+        OR,     // ||
         FUNCTION,   // func
         LET,    // let
         TRUE,   // true

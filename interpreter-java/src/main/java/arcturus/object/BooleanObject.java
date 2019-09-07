@@ -1,6 +1,6 @@
 package arcturus.object;
 
-public class BooleanObject implements Object {
+public class BooleanObject extends Object {
     private boolean value;
 
     private BooleanObject(boolean value) {
@@ -18,11 +18,6 @@ public class BooleanObject implements Object {
 
     @Override
     public String inspect() {
-        return String.valueOf(value);
-    }
-
-    @Override
-    public String toString() {
         return String.valueOf(value);
     }
 

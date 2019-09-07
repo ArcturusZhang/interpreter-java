@@ -2,7 +2,7 @@ package arcturus.object;
 
 import java.math.BigDecimal;
 
-public class DecimalObject implements Object {
+public class DecimalObject extends Object {
     private BigDecimal value;
     public DecimalObject(BigDecimal value) {
         this.value = value;
@@ -22,11 +22,6 @@ public class DecimalObject implements Object {
 
     @Override
     public String inspect() {
-        return value.toString();
-    }
-
-    @Override
-    public String toString() {
         return value.toString();
     }
 }

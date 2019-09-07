@@ -8,11 +8,11 @@ import java.util.Map;
 import java.util.function.BiFunction;
 
 import arcturus.ast.interfaces.Expression;
-import arcturus.evaluator.EvaluateException;
 import arcturus.object.BooleanObject;
 import arcturus.object.DecimalObject;
 import arcturus.object.IntegerObject;
 import arcturus.object.Object;
+import arcturus.object.TypeMismatchError;
 import arcturus.object.Object.Type;
 import arcturus.repl.Repl;
 import arcturus.token.Token;
@@ -92,11 +92,11 @@ public class InfixExpression implements Expression {
         case INTEGER:
             return evalInteger((IntegerObject) leftObj, (IntegerObject) rightObj);
         case DECIMAL:
-            return evalDecimal(castValue(leftObj), castValue(rightObj));
+            return evalDecimal(leftObj, rightObj);
         case BOOLEAN:
             return evalBoolean((BooleanObject) leftObj, (BooleanObject) rightObj);
         default:
-            throw evaluateException(operator, leftObj, rightObj);
+            return new TypeMismatchError(operator, leftObj.type(), rightObj.type());
         }
     }
 
@@ -104,27 +104,27 @@ public class InfixExpression implements Expression {
         if (ARITH_OPERATORS.contains(operator)) {
             var func = intArithMap.get(operator);
             if (func == null)
-                throw evaluateException(operator, left, right);
+                return new TypeMismatchError(operator, left.type(), right.type());
             return new IntegerObject(func.apply(left.getValue(), right.getValue()));
         } else {
             var func = intBoolMap.get(operator);
             if (func == null)
-                throw evaluateException(operator, left, right);
+                return new TypeMismatchError(operator, left.type(), right.type());
             return BooleanObject.getBoolean(func.apply(left.getValue(), right.getValue()));
         }
     }
 
-    private Object evalDecimal(DecimalObject left, DecimalObject right) {
+    private Object evalDecimal(Object left, Object right) {
         if (ARITH_OPERATORS.contains(operator)) {
             var func = decArithMap.get(operator);
             if (func == null)
-                throw evaluateException(operator, left, right);
-            return new DecimalObject(func.apply(left.getValue(), right.getValue()));
+                return new TypeMismatchError(operator, left.type(), right.type());
+            return new DecimalObject(func.apply(castValue(left).getValue(), castValue(right).getValue()));
         } else {
             var func = decBoolMap.get(operator);
             if (func == null)
-                throw evaluateException(operator, left, right);
-            return BooleanObject.getBoolean(func.apply(left.getValue(), right.getValue()));
+                return new TypeMismatchError(operator, left.type(), right.type());
+            return BooleanObject.getBoolean(func.apply(castValue(left).getValue(), castValue(right).getValue()));
         }
     }
 
@@ -135,13 +135,8 @@ public class InfixExpression implements Expression {
         case "||":
             return left == BooleanObject.TRUE ? left : right;
         default:
-            throw evaluateException(operator, left, right);
+            return new TypeMismatchError(operator, left.type(), right.type());
         }
-    }
-
-    private EvaluateException evaluateException(String operator, Object left, Object right) {
-        return new EvaluateException(String.format("Error - operator %s cannot be used between type %s and %s",
-                operator, left.type(), right.type()));
     }
 
     private DecimalObject castValue(Object obj) {

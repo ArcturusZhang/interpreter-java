@@ -9,6 +9,7 @@ public enum Precedence {
     LOWEST,
     EQUALS,
     LESSGREATER,
+    LOGICAL,
     SUM,
     PRODUCT,
     PREFIX,
@@ -26,6 +27,8 @@ public enum Precedence {
         precedenceMap.put(Type.GT, LESSGREATER);
         precedenceMap.put(Type.LE, LESSGREATER);
         precedenceMap.put(Type.GE, LESSGREATER);
+        precedenceMap.put(Type.ADD, LOGICAL);
+        precedenceMap.put(Type.OR, LOGICAL);
         precedenceMap.put(Type.PLUS, SUM);
         precedenceMap.put(Type.MINUS, SUM);
         precedenceMap.put(Type.ASTERISK, PRODUCT);

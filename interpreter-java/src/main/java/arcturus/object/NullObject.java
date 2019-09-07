@@ -1,6 +1,6 @@
 package arcturus.object;
 
-public class NullObject implements Object {
+public class NullObject extends Object {
 
     private NullObject() {}
 
@@ -12,11 +12,6 @@ public class NullObject implements Object {
     @Override
     public String inspect() {
         return "null";
-    }
-
-    @Override
-    public String toString() {
-        return inspect();
     }
 
     public static final NullObject NULL = new NullObject();

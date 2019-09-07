@@ -1,6 +1,6 @@
 package arcturus.object;
 
-public class StringObject implements Object {
+public class StringObject extends Object {
     private String value;
 
     public StringObject(String value) {
@@ -14,11 +14,6 @@ public class StringObject implements Object {
 
     @Override
     public String inspect() {
-        return value;
-    }
-
-    @Override
-    public String toString() {
         return value;
     }
 
