@@ -39,7 +39,9 @@ public class BooleanLiteral implements Expression {
 
     @Override
     public Object evaluate(Environment env) {
-        return BooleanObject.getBoolean(value);
+        var result = BooleanObject.getBoolean(value);
+        env.setCurrent(result);
+        return result;
     }
 
 }

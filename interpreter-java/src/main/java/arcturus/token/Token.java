@@ -55,6 +55,8 @@ public class Token {
         keywords.put("for", Type.FOR);
         keywords.put("do", Type.DO);
         keywords.put("while", Type.WHILE);
+        keywords.put("break", Type.BREAK);
+        keywords.put("continue", Type.CONTINUE);
         keywords.put("return", Type.RETURN);
     }
 
@@ -108,6 +110,8 @@ public class Token {
         FOR,    // for
         DO,     // do
         WHILE,  // while
+        BREAK,  // break
+        CONTINUE,   // continue
         RETURN, // return
     }
 }

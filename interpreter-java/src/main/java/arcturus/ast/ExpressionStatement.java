@@ -42,7 +42,9 @@ public class ExpressionStatement implements Statement {
 
     @Override
     public Object evaluate(Environment env) {
-        return expression.evaluate(env);
+        var result = expression.evaluate(env);
+        env.setCurrent(result);
+        return result;
     }
 
     @Override

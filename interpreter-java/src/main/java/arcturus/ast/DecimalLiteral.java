@@ -44,7 +44,9 @@ public class DecimalLiteral implements Expression {
 
     @Override
     public Object evaluate(Environment env) {
-        return new DecimalObject(value);
+        var result = new DecimalObject(value);
+        env.setCurrent(result);
+        return result;
     }
 
 }

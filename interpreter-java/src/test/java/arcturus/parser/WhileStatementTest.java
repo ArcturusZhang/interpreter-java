@@ -11,9 +11,12 @@ import arcturus.object.Object;
 public class WhileStatementTest {
     @Test
     public void testWhileStatement() {
-        var items = new Item[] {
-            new Item("let sum = 0; let i = 0; while (i <= 10) { sum = sum + i; i = i + 1;} sum;", new IntegerObject("55"))
-        };
+        var items = new Item[] { new Item(
+                "let sum = 0; let i = 0; while (i <= 10) { sum = sum + i; i = i + 1;} sum;", new IntegerObject("55")),
+                new Item("while (5==5) { 1; break; 2; }", new IntegerObject("1")),
+                new Item(
+                        "let sum = 0; let i = 0; while (i <= 1000) { sum = sum + i; if (i == 10) break; i = i + 1;} sum;",
+                        new IntegerObject("55")) };
         for (var item : items) {
             testItem(item);
         }
@@ -22,6 +25,7 @@ public class WhileStatementTest {
     private void testItem(Item item) {
         var parser = new Parser(new Lexer(item.input));
         var program = parser.parse();
+        Assert.assertTrue(parser.getErrors().isEmpty());
         var result = program.evaluate(new Environment(null));
         Assert.assertEquals(item.expect, result);
     }
@@ -29,6 +33,7 @@ public class WhileStatementTest {
     private static class Item {
         String input;
         Object expect;
+
         Item(String input, Object expect) {
             this.input = input;
             this.expect = expect;

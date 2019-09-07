@@ -66,6 +66,7 @@ public class AssignStatement implements Statement {
         // if variable exists, evaluate its value, and put it into env
         var result = value.evaluate(env);
         env.put(variable.getValue(), result);
+        env.setCurrent(result);
         return result;
     }
 }

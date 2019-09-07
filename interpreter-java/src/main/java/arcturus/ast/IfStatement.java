@@ -13,8 +13,8 @@ public class IfStatement implements Statement {
 
     private Token token;
     private Expression condition;
-    private BlockStatement thenStatement;
-    private BlockStatement elseStatement;
+    private Statement thenStatement;
+    private Statement elseStatement;
 
     public IfStatement(Token token) {
         this.token = token;
@@ -44,28 +44,28 @@ public class IfStatement implements Statement {
     /**
      * @return the thenStatement
      */
-    public BlockStatement getThenStatement() {
+    public Statement getThenStatement() {
         return thenStatement;
     }
 
     /**
      * @param thenStatement the thenStatement to set
      */
-    public void setThenStatement(BlockStatement thenStatement) {
+    public void setThenStatement(Statement thenStatement) {
         this.thenStatement = thenStatement;
     }
 
     /**
      * @param elseStatement the elseStatement to set
      */
-    public void setElseStatement(BlockStatement elseStatement) {
+    public void setElseStatement(Statement elseStatement) {
         this.elseStatement = elseStatement;
     }
 
     /**
      * @return the elseStatement
      */
-    public BlockStatement getElseStatement() {
+    public Statement getElseStatement() {
         return elseStatement;
     }
 

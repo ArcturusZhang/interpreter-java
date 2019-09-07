@@ -44,6 +44,8 @@ public class StringLiteral implements Expression {
 
     @Override
     public Object evaluate(Environment env) {
-        return new StringObject(value);
+        var result = new StringObject(value);
+        env.setCurrent(result);
+        return result;
     }
 }

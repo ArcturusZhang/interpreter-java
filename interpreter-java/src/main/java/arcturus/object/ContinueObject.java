@@ -1,8 +1,17 @@
 package arcturus.object;
 
 public class ContinueObject extends Object {
+    private Object previous;
+    public ContinueObject(Object previous) {
+        this.previous = previous;
+    }
 
-    private ContinueObject() {}
+    /**
+     * @return the previous
+     */
+    public Object getPrevious() {
+        return previous;
+    }
 
     @Override
     public Type type() {
@@ -13,7 +22,4 @@ public class ContinueObject extends Object {
     public String inspect() {
         return "continue";
     }
-
-    public static final ContinueObject CONTINUE = new ContinueObject();
-
 }

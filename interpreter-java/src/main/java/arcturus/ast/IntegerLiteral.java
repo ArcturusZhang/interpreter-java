@@ -38,7 +38,9 @@ public class IntegerLiteral implements Expression {
 
     @Override
     public Object evaluate(Environment env) {
-        return new IntegerObject(value);
+        var result = new IntegerObject(value);
+        env.setCurrent(result);
+        return result;
     }
 
 }

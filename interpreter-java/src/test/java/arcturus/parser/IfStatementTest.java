@@ -18,7 +18,8 @@ public class IfStatementTest {
             new Item("if (5 == 5) { 1; } else {2; }", new IntegerObject("1")),
             new Item("if (5 > 4) {1; }", new IntegerObject("1")),
             new Item("if (4 > 4) {1; } 2;", new IntegerObject("2")),
-            new Item("if (4 > 4) {1; }", NullObject.NULL)
+            new Item("if (4 > 4) {1; }", NullObject.NULL),
+            new Item("if (5 > 3) 1; else 2;", new IntegerObject("1"))
         };
         for(var item : items) {
             testItem(item);

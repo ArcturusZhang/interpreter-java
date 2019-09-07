@@ -1,7 +1,18 @@
 package arcturus.object;
 
 public class BreakObject extends Object {
-    private BreakObject() {
+
+    private Object previous;
+
+    public BreakObject(Object previous) {
+        this.previous = previous;
+    }
+
+    /**
+     * @return the previous
+     */
+    public Object getPrevious() {
+        return previous;
     }
 
     @Override
@@ -13,7 +24,5 @@ public class BreakObject extends Object {
     public String inspect() {
         return "break";
     }
-
-    public static final BreakObject BREAK = new BreakObject();
 
 }

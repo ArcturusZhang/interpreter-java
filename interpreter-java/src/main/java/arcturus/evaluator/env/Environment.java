@@ -8,10 +8,25 @@ import arcturus.object.Object;
 public class Environment {
     private Environment parent;
     private Map<String, Object> symbolTable;
+    private Object current;
 
     public Environment(Environment parent) {
         this.parent = parent;
         symbolTable = new HashMap<>();
+    }
+
+    /**
+     * @return the current
+     */
+    public Object getCurrent() {
+        return current;
+    }
+
+    /**
+     * @param current the current to set
+     */
+    public void setCurrent(Object current) {
+        this.current = current;
     }
 
     /**

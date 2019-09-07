@@ -10,7 +10,9 @@ import java.util.Map;
 import arcturus.ast.AssignStatement;
 import arcturus.ast.BlockStatement;
 import arcturus.ast.BooleanLiteral;
+import arcturus.ast.BreakStatement;
 import arcturus.ast.CallExpression;
+import arcturus.ast.ContinueStatement;
 import arcturus.ast.DecimalLiteral;
 import arcturus.ast.DoStatement;
 import arcturus.ast.ExpressionStatement;
@@ -146,6 +148,10 @@ public class Parser {
             return parseDoStatement();
         case WHILE:
             return parseWhileStatement();
+        case BREAK:
+            return parseBreakStatement();
+        case CONTINUE:
+            return parseContinueStatement();
         default:
             return parseExpressionStatement();
         }
@@ -371,11 +377,17 @@ public class Parser {
         if (!expectPeek(Type.RPAREN))
             return null;
         nextToken(); // skip )
-        ifStatement.setThenStatement(parseBlockStatement());
+        if (currentTokenIs(Type.LBRACE))
+            ifStatement.setThenStatement(parseBlockStatement());
+        else
+            ifStatement.setThenStatement(parseStatement());
         if (peekTokenIs(Type.ELSE)) {
             nextToken();
             nextToken(); // skip else -- current token is lbrace
-            ifStatement.setElseStatement(parseBlockStatement());
+            if (currentTokenIs(Type.LBRACE))
+                ifStatement.setElseStatement(parseBlockStatement());
+            else
+                ifStatement.setElseStatement(parseStatement());
         }
         return ifStatement;
     }
@@ -399,5 +411,19 @@ public class Parser {
         nextToken(); // skip )
         whileStatement.setBody(parseBlockStatement());
         return whileStatement;
+    }
+
+    private BreakStatement parseBreakStatement() {
+        var breakStatement = new BreakStatement(currentToken);
+        if (!expectPeek(Type.SEMICOLON))
+            return null;
+        return breakStatement;
+    }
+
+    private ContinueStatement parseContinueStatement() {
+        var continueStatement = new ContinueStatement(currentToken);
+        if (!expectPeek(Type.SEMICOLON))
+            return null;
+        return continueStatement;
     }
 }

@@ -27,7 +27,7 @@ public class BreakStatement implements Statement {
 
     @Override
     public Object evaluate(Environment env) {
-        return BreakObject.BREAK;
+        return new BreakObject(env.getCurrent());
     }
 
 }

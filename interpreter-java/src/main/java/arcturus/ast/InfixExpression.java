@@ -89,16 +89,22 @@ public class InfixExpression implements Expression {
         var leftObj = left.evaluate(env);
         var rightObj = right.evaluate(env);
         var type = Type.conform(leftObj.type(), rightObj.type());
+        Object result;
         switch (type) {
         case INTEGER:
-            return evalInteger((IntegerObject) leftObj, (IntegerObject) rightObj);
+            result = evalInteger((IntegerObject) leftObj, (IntegerObject) rightObj);
+            break;
         case DECIMAL:
-            return evalDecimal(leftObj, rightObj);
+            result = evalDecimal(leftObj, rightObj);
+            break;
         case BOOLEAN:
-            return evalBoolean((BooleanObject) leftObj, (BooleanObject) rightObj);
+            result = evalBoolean((BooleanObject) leftObj, (BooleanObject) rightObj);
+            break;
         default:
             return new TypeMismatchError(operator, leftObj.type(), rightObj.type());
         }
+        env.setCurrent(result);
+        return result;
     }
 
     private Object evalInteger(IntegerObject left, IntegerObject right) {

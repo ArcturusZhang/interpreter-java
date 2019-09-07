@@ -62,14 +62,19 @@ public class PrefixExpression implements Expression {
     @Override
     public Object evaluate(Environment env) {
         var rightValue = right.evaluate(env);
+        Object result;
         switch (operator) {
         case "!":
-            return evalBangObject(rightValue);
+            result=  evalBangObject(rightValue);
+            break;
         case "-":
-            return evalMinusObject(rightValue);
+            result = evalMinusObject(rightValue);
+            break;
         default:
             return new TypeMismatchError(operator, rightValue.type());
         }
+        env.setCurrent(result);
+        return result;
     }
 
     private Object evalBangObject(Object right) {

@@ -6,8 +6,11 @@ import java.util.stream.Collectors;
 
 import arcturus.ast.interfaces.Statement;
 import arcturus.evaluator.env.Environment;
+import arcturus.object.BreakObject;
+import arcturus.object.ContinueObject;
 import arcturus.object.NullObject;
 import arcturus.object.Object;
+import arcturus.object.ReturnValue;
 import arcturus.token.Token;
 
 public class BlockStatement implements Statement {
@@ -54,9 +57,13 @@ public class BlockStatement implements Statement {
     @Override
     public Object evaluate(Environment env) {
         Object result = NullObject.NULL;
-        if (statements.isEmpty()) return result;
+        if (statements.isEmpty())
+            return result;
         for (var stmt : statements) {
             result = stmt.evaluate(env);
+            if (result instanceof BreakObject || result instanceof ContinueObject || result instanceof ReturnValue)
+                return result;
+            env.setCurrent(result);
         }
         return result;
     }

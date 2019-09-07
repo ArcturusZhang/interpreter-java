@@ -62,6 +62,7 @@ public class LetStatement implements Statement {
         if (env.contains(name.getValue())) return new VariableExistsError(name);
         var value = expression.evaluate(env);
         env.put(name.getValue(), value);
+        env.setCurrent(value);
         return value;
     }
 }

@@ -20,7 +20,7 @@ public class ContinueStatement implements Statement {
 
     @Override
     public Object evaluate(Environment env) {
-        return ContinueObject.CONTINUE;
+        return new ContinueObject(env.getCurrent());
     }
 
 }
