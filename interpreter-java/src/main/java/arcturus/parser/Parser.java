@@ -29,7 +29,6 @@ import arcturus.ast.WhileStatement;
 import arcturus.ast.interfaces.Expression;
 import arcturus.ast.interfaces.Statement;
 import arcturus.lexer.Lexer;
-import arcturus.parser.errors.IllegalTokenError;
 import arcturus.parser.errors.NoPrefixParseError;
 import arcturus.parser.errors.NumberFormatError;
 import arcturus.parser.errors.ParseError;
@@ -364,7 +363,21 @@ public class Parser {
     }
 
     private IfStatement parseIfStatement() {
-        return null;
+        var ifStatement = new IfStatement(currentToken);
+        if (!expectPeek(Type.LPAREN))
+            return null;
+        nextToken(); // skip (
+        ifStatement.setCondition(parseExpression(Precedence.LOWEST));
+        if (!expectPeek(Type.RPAREN))
+            return null;
+        nextToken(); // skip )
+        ifStatement.setThenStatement(parseBlockStatement());
+        if (peekTokenIs(Type.ELSE)) {
+            nextToken();
+            nextToken(); // skip else -- current token is lbrace
+            ifStatement.setElseStatement(parseBlockStatement());
+        }
+        return ifStatement;
     }
 
     private ForStatement parseForStatement() {
