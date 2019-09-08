@@ -65,10 +65,13 @@ public class PrefixExpression implements Expression {
         Object result;
         switch (operator) {
         case "!":
-            result=  evalBangObject(rightValue);
+            result = evalBangObject(rightValue);
             break;
         case "-":
             result = evalMinusObject(rightValue);
+            break;
+        case "+":
+            result = evalPlusObject(rightValue);
             break;
         default:
             return new TypeMismatchError(operator, rightValue.type());
@@ -92,6 +95,16 @@ public class PrefixExpression implements Expression {
         case DECIMAL:
             var decimalObject = (DecimalObject) right;
             return new DecimalObject(decimalObject.getValue().negate());
+        default:
+            return new TypeMismatchError(operator, right.type());
+        }
+    }
+
+    private Object evalPlusObject(Object right) {
+        switch (right.type()) {
+        case INTEGER:
+        case DECIMAL:
+            return right;
         default:
             return new TypeMismatchError(operator, right.type());
         }

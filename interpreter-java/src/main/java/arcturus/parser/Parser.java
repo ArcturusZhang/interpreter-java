@@ -58,7 +58,7 @@ public class Parser {
         registerPrefix(this::parseIntegerLiteral, Type.INT);
         registerPrefix(this::parseDecimalLiteral, Type.DECIMAL);
         registerPrefix(this::parseBooleanLiteral, Type.TRUE, Type.FALSE);
-        registerPrefix(this::parsePrefixExpression, Type.BANG, Type.MINUS);
+        registerPrefix(this::parsePrefixExpression, Type.BANG, Type.MINUS, Type.PLUS);
         registerPrefix(this::parseGroupedExpression, Type.LPAREN);
         registerPrefix(this::parseFunctionLiteral, Type.FUNCTION);
         registerPrefix(this::parseStringLiteral, Type.STRING);
@@ -102,6 +102,15 @@ public class Parser {
 
     private boolean peekTokenIs(Type type) {
         return peekToken.getType() == type;
+    }
+
+    private boolean expectCurrent(Type type) {
+        if (currentToken.getType() == type) {
+            nextToken();
+            return true;
+        }
+        raiseError(new TokenError(type, currentToken, lexer.getLine(), lexer.getCol()));
+        return false;
     }
 
     private boolean expectPeek(Type type) {
@@ -397,7 +406,20 @@ public class Parser {
     }
 
     private DoStatement parseDoStatement() {
-        return null;
+        var doStatement = new DoStatement(currentToken);
+        nextToken(); // skip do keyword
+        doStatement.setBody(parseBlockStatement());
+        if (!expectPeek(Type.WHILE))
+            return null;
+        if (!expectPeek(Type.LPAREN))
+            return null;
+        nextToken(); // skip (
+        doStatement.setCondition(parseExpression(Precedence.LOWEST));
+        if (!expectPeek(Type.RPAREN))
+            return null;
+        if (!expectPeek(Type.SEMICOLON))
+            return null;
+        return doStatement;
     }
 
     private WhileStatement parseWhileStatement() {

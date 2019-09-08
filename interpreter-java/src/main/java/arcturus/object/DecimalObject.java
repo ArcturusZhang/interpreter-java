@@ -9,6 +9,10 @@ public class DecimalObject extends Object {
         this.value = value;
     }
 
+    public DecimalObject(String value) {
+        this.value = new BigDecimal(value);
+    }
+
     /**
      * @return the value
      */

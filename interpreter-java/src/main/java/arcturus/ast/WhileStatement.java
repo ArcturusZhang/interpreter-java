@@ -75,14 +75,15 @@ public class WhileStatement implements Statement {
                     continue;
                 }
                 if (result instanceof BreakObject) {
-                    return ((BreakObject) result).getPrevious();
+                    result = ((BreakObject) result).getPrevious();
+                    break;
                 }
                 if (result instanceof ReturnValue)
                     return result;
             }
             return result;
         } catch (ConditionException e) {
-            return new ErrorObject("Error: condition of if statement must be boolean");
+            return new ErrorObject("Error: condition of while statement must be boolean");
         }
     }
 

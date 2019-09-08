@@ -61,8 +61,10 @@ public class EvaluatorTest {
     @Test
     public void testVaraibleBinding() {
         var items = new Item[] {
-            new Item("let x = 10; x;", new IntegerObject(new BigInteger("10"))),
-            new Item("let x = 6; let y = x * 9.2;", new DecimalObject(new BigDecimal("55.2"))),
+            new Item("let x = 10; x;", new IntegerObject("10")),
+            new Item("let x = 6; let y = x * 9.2;", new DecimalObject("55.2")),
+            new Item("let x = 10; x + +9 - -2.3;", new DecimalObject("21.3")),
+            new Item("let x = 2.3 * -10; 8 / (1 / x);", new DecimalObject("-183.9999998712"))
         };
         for (var item : items) {
             testOne(item);
