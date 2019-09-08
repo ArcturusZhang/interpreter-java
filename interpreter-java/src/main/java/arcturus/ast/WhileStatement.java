@@ -68,6 +68,8 @@ public class WhileStatement implements Statement {
             Object result = NullObject.NULL;
             while (evaluateCondition(env)) {
                 result = body.evaluate(env);
+                if (result instanceof ErrorObject)
+                    return result;
                 if (result instanceof ContinueObject) {
                     result = ((ContinueObject) result).getPrevious();
                     continue;

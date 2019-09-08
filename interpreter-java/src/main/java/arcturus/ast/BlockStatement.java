@@ -59,11 +59,12 @@ public class BlockStatement implements Statement {
         Object result = NullObject.NULL;
         if (statements.isEmpty())
             return result;
+        var currentEnv = new Environment(env);
         for (var stmt : statements) {
-            result = stmt.evaluate(env);
+            result = stmt.evaluate(currentEnv);
             if (result instanceof BreakObject || result instanceof ContinueObject || result instanceof ReturnValue)
                 return result;
-            env.setCurrent(result);
+            currentEnv.setCurrent(result);
         }
         return result;
     }

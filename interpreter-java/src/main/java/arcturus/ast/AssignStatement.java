@@ -62,10 +62,10 @@ public class AssignStatement implements Statement {
     public Object evaluate(Environment env) {
         // if variable does not exist, return an error
         if (!env.contains(variable.getValue()))
-        return new VariableNotDeclaredError(variable);
+            return new VariableNotDeclaredError(variable);
         // if variable exists, evaluate its value, and put it into env
         var result = value.evaluate(env);
-        env.put(variable.getValue(), result);
+        env.set(variable.getValue(), result);
         env.setCurrent(result);
         return result;
     }

@@ -26,7 +26,8 @@ public class WhileStatementTest {
         var parser = new Parser(new Lexer(item.input));
         var program = parser.parse();
         Assert.assertTrue(parser.getErrors().isEmpty());
-        var result = program.evaluate(new Environment(null));
+        var root = new Environment(null);
+        var result = program.evaluate(root);
         Assert.assertEquals(item.expect, result);
     }
 

@@ -35,18 +35,29 @@ public class Environment {
     public Environment getParent() {
         return parent;
     }
-    
+
     public Object get(String identifier) {
-        if (symbolTable.containsKey(identifier)) return symbolTable.get(identifier);
-        if (parent!= null) return parent.get(identifier);
+        if (symbolTable.containsKey(identifier))
+            return symbolTable.get(identifier);
+        if (parent != null)
+            return parent.get(identifier);
         return null;
     }
 
     public boolean contains(String identifier) {
-        return symbolTable.containsKey(identifier);
+        return get(identifier) != null;
     }
 
-    public Object put(String identifier, Object value) {
-        return symbolTable.put(identifier, value);
+    public void put(String identifier, Object value) {
+        if (symbolTable.containsKey(identifier))
+            throw new IllegalStateException("Identifier" + identifier + "does not exist in environment");
+        symbolTable.put(identifier, value);
+    }
+
+    public void set(String identifier, Object value) {
+        if (symbolTable.containsKey(identifier))
+            symbolTable.put(identifier, value);
+        else
+            parent.set(identifier, value);
     }
 }
