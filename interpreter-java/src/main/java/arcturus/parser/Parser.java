@@ -68,7 +68,7 @@ public class Parser {
         registerInfix(this::parseInfixExpression, Type.EQ, Type.NE, Type.LT, Type.GT, Type.LE, Type.GE); // relation
         registerInfix(this::parseInfixExpression, Type.ADD, Type.OR); // logical
         registerInfix(this::parseCallExpression, Type.LPAREN);
-        // registerInfix(this::parseIndexExpression, Type.LBRACKET);
+        registerInfix(this::parseIndexExpression, Type.LBRACKET);
     }
 
     private void registerPrefix(PrefixParseFunction function, Type... types) {
@@ -329,6 +329,11 @@ public class Parser {
 
     private Expression parseCallExpression(Expression function) {
         return new CallExpression(currentToken, function, parseExpressionList(Type.RPAREN));
+    }
+
+    private Expression parseIndexExpression(Expression left) {
+        // todo
+        return null;
     }
 
     private List<Expression> parseExpressionList(Type end) {
